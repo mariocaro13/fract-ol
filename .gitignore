@@ -1,7 +1,7 @@
-gnlTester
 *.swp
-main/gnl
 .vs
+*.pdf
+
 # Prerequisites
 *.d
 

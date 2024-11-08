@@ -6,7 +6,7 @@
 #    By: mcaro-ro <mcaro-ro@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/18 19:03:45 by mcaro-ro          #+#    #+#              #
-#    Updated: 2024/09/19 09:50:55 by mcaro-ro         ###   ########.fr        #
+#    Updated: 2024/11/08 13:18:27 by mcaro-ro         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,9 @@ MINILIBX_FLAGS = -lXext -lX11
 NAME = fractol
 
 SOURCE = main.c \
-	ft_mlx.c
+	ft_mlx.c \
+	utility.c \
+	mandelbrot.c
 	
 OBJECTS = $(SOURCE:.c=.o)
 

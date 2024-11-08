@@ -6,7 +6,7 @@
 /*   By: mcaro-ro <mcaro-ro@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 09:43:13 by mcaro-ro          #+#    #+#             */
-/*   Updated: 2024/09/19 09:51:15 by mcaro-ro         ###   ########.fr       */
+/*   Updated: 2024/11/08 13:19:43 by mcaro-ro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	ft_mlx_clean(void *connection, void *window)
 	free(connection);
 }
 
-int	ft_mlx_init(t_mlx *mlx)
+int	ft_mlx_init(t_mlx_data *mlx)
 {
 	mlx->connection = mlx_init();
 	if (NULL == mlx->connection)
@@ -34,13 +34,20 @@ int	ft_mlx_init(t_mlx *mlx)
 	return (EXIT_SUCCESS);
 }
 
-int	ft_mlx_close_window(int keysym, t_mlx *mlx)
+int	ft_mlx_close_window(int keysym, t_mlx_data *mlx)
 {
 	if (XK_Escape == keysym)
 	{
-		printf("The %d key (ESC) has been pressed.\n", keysym);
 		ft_mlx_clean(mlx->connection, mlx->window);
 		exit(EXIT_SUCCESS);
 	}
 	return (EXIT_SUCCESS);
+}
+
+void	ft_mlx_pixel_put(t_img_data *img, int offset, int color)
+{
+	char	*dst;
+
+	dst = img->addr + offset;
+	*(unsigned int *)dst = color;
 }
