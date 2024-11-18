@@ -6,32 +6,50 @@
 /*   By: mcaro-ro <mcaro-ro@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 19:05:16 by mcaro-ro          #+#    #+#             */
-/*   Updated: 2024/11/15 16:03:34 by mcaro-ro         ###   ########.fr       */
+/*   Updated: 2024/11/18 18:05:07 by mcaro-ro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+/**
+ * PROYECT
+ ** Name: Fractol
+ * Julia and Mandelbrot
+ * Infinite Zoom
+ * Able to take command line args to display fractal render
+ * Able to take command line args to shape Julia, i.e x y coordinates
+ * ESC closes with no leaks
+ * Click on the X button closes with no leaks
+ **/
+
 #include "fractol.h"
 
-void	ft_mlx_put_image(void)
+/**
+ * 2 KINDA PROMPTS
+ * 	.\fractol mandelbrot
+ *  .\fractol julia <real> <i>
+ **/
+int	main(int argc, char **argv)
 {
-}
+	t_fractal	fractal;
 
-int	main(void)
-{
-	t_mlx_data	mlx;
-	t_img_data	img;
-
-	if (ft_mlx_init(&mlx))
+	if ((2 == argc && !ft_strncmp(argv[1], "mandelbrot", 10)) || (4 == argc
+			&& !ft_strncmp(argv[1], "julia", 5)))
+	{
+		fractal.name = argv[1];
+		if (ft_fractal_init(&fractal))
+			exit(EXIT_FAILURE);
+		// Render
+		ft_fractal_render(&fractal);
+		mlx_key_hook(fractal.mlx_window, ft_mlx_handle_key, &fractal);
+		// Loop
+		mlx_loop(fractal.mlx_connection);
+	}
+	else
+	{
+		// Prompt wrong, exit app with error message
+		ft_putstr_fd(ERROR_MESSAGE, STDERR_FILENO);
 		exit(EXIT_FAILURE);
-	mlx_key_hook(mlx.window, ft_mlx_close_window, &mlx);
-	img.img = mlx_new_image(mlx.connection, WIDTH, HEIGHT);
-	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length,
-			&img.endian);
-	ft_mlx_pixel_put(&img, ft_offset(5, 10, img.line_length,
-			img.bits_per_pixel), 0x00FF0000);
-	draw_mandelbrot(&img);
-	mlx_put_image_to_window(mlx.connection, mlx.window, img.img, 0, 0);
-	mlx_loop(mlx.connection);
-	ft_mlx_clean(mlx.connection, mlx.window);
+	}
+	ft_mlx_clean(fractal.mlx_connection, fractal.mlx_window);
 	return (EXIT_SUCCESS);
 }

@@ -6,56 +6,51 @@
 /*   By: mcaro-ro <mcaro-ro@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 12:03:49 by mcaro-ro          #+#    #+#             */
-/*   Updated: 2024/11/15 16:39:08 by mcaro-ro         ###   ########.fr       */
+/*   Updated: 2024/11/18 18:50:44 by mcaro-ro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-int	mandelbrot(double complex_r, double complex_i)
+void	mandelbrot(int x, int y, t_fractal *fractal)
 {
-	int		iterations;
-	double	z_real;
-	double	z_imaginary;
-	double	temp;
+	t_complex	z;
+	t_complex	c;
+	int			iterations;
+	int			color;
 
 	iterations = 0;
-	z_real = 0;
-	z_imaginary = 0;
-	while (z_real * z_real + z_imaginary * z_imaginary <= 4 && iterations < MAX_ITERATIONS)
+	z.r = 0.0;
+	z.i = 0.0;
+	c.r = ft_map(x, COMPLEX_MIN, COMPLEX_MAX, WIDTH);
+	c.i = ft_map(y, COMPLEX_MAX, COMPLEX_MIN, HEIGHT);
+	while (iterations < NUM_OF_ITERATIONS)
 	{
-		temp = z_real * z_real - z_imaginary * z_imaginary + complex_r;
-		z_imaginary = 2 * z_real * z_imaginary + complex_i;
-		z_real = temp;
+		z = ft_sum_complex(ft_square_complex(z), c);
+		if ((ft_hypotenuse(z.r, z.i)) > ESCAPE_VALUE)
+		{
+			color = ft_map(iterations, BLACK, WHITE, NUM_OF_ITERATIONS);
+			ft_mlx_pixel_put(x, y, &fractal->img, color);
+			return ;
+		}
 		iterations++;
 	}
-	return (iterations);
+	ft_mlx_pixel_put(x, y, &fractal->img, WHITE);
 }
 
-void	draw_mandelbrot(t_img_data *img)
+void	draw_mandelbrot(t_fractal *fractal)
 {
-	int		x;
-	int		y;
-	int		iterations;
+	t_complex	z;
 
-	x = 0;
-	while (x < WIDTH)
+	z.i = -1;
+	while (++z.i < HEIGHT)
 	{
-		y = 0;
-		while (y < HEIGHT)
+		z.r = -1;
+		while (++z.r < WIDTH)
 		{
-			iterations = mandelbrot(ft_convert_to_complex(x, WIDTH),
-					ft_convert_to_complex(y, HEIGHT));
-			if (iterations == MAX_ITERATIONS)
-				ft_mlx_pixel_put(img,
-					ft_offset(x, y, img->line_length, img->bits_per_pixel),
-					BLACK);
-			else
-				ft_mlx_pixel_put(img,
-					ft_offset(x, y, img->line_length, img->bits_per_pixel),
-					WHITE - iterations * (WHITE / MAX_ITERATIONS));
-			y++;
+			mandelbrot(z.r, z.i, fractal);
 		}
-		x++;
 	}
+	mlx_put_image_to_window(fractal->mlx_connection, fractal->mlx_window,
+		fractal->img.ptr, 0, 0);
 }

@@ -6,7 +6,7 @@
 #    By: mcaro-ro <mcaro-ro@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/18 19:03:45 by mcaro-ro          #+#    #+#              #
-#    Updated: 2024/11/08 13:18:27 by mcaro-ro         ###   ########.fr        #
+#    Updated: 2024/11/18 17:50:43 by mcaro-ro         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,8 +19,11 @@ MINILIBX_FLAGS = -lXext -lX11
 NAME = fractol
 
 SOURCE = main.c \
-	ft_mlx.c \
-	utility.c \
+	str_utils.c \
+	mlx_utils.c \
+	math_utils.c \
+	fractal_init.c \
+	fractal_render.c \
 	mandelbrot.c
 	
 OBJECTS = $(SOURCE:.c=.o)
@@ -35,7 +38,7 @@ all: $(NAME)
 
 run: re
 	@$(MAKE) all $(CFLAGS) --silent;
-	./$(NAME)
+	./$(NAME) "mandelbrot"
 
 valgrind: re
 	@valgrind ./$(NAME)

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_mlx.c                                           :+:      :+:    :+:   */
+/*   mlx_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mcaro-ro <mcaro-ro@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 09:43:13 by mcaro-ro          #+#    #+#             */
-/*   Updated: 2024/11/08 13:19:43 by mcaro-ro         ###   ########.fr       */
+/*   Updated: 2024/11/18 18:26:08 by mcaro-ro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,34 +20,25 @@ void	ft_mlx_clean(void *connection, void *window)
 	free(connection);
 }
 
-int	ft_mlx_init(t_mlx_data *mlx)
+int	ft_offset(int x, int y, int line_length, int bits_per_pixel)
 {
-	mlx->connection = mlx_init();
-	if (NULL == mlx->connection)
-		return (MALLOC_ERROR);
-	mlx->window = mlx_new_window(mlx->connection, WIDTH, HEIGHT, "Fract'ol");
-	if (NULL == mlx->window)
-	{
-		ft_mlx_clean(mlx->connection, NULL);
-		return (MALLOC_ERROR);
-	}
-	return (EXIT_SUCCESS);
+	return (y * line_length + (x * (bits_per_pixel / 8)));
 }
 
-int	ft_mlx_close_window(int keysym, t_mlx_data *mlx)
+void	ft_mlx_pixel_put(int x, int y, t_img_data *img, int color)
 {
-	if (XK_Escape == keysym)
+	int	offset;
+
+	offset = ft_offset(x, y, img->line_length, img->bits_per_pixel);
+	*(unsigned int *)(img->pixels_ptr + offset) = color;
+}
+
+int	ft_mlx_handle_key(int keysym, t_fractal *mlx)
+{
+	if (keysym == XK_Escape)
 	{
-		ft_mlx_clean(mlx->connection, mlx->window);
+		ft_mlx_clean(mlx->mlx_connection, mlx->mlx_window);
 		exit(EXIT_SUCCESS);
 	}
 	return (EXIT_SUCCESS);
-}
-
-void	ft_mlx_pixel_put(t_img_data *img, int offset, int color)
-{
-	char	*dst;
-
-	dst = img->addr + offset;
-	*(unsigned int *)dst = color;
 }
