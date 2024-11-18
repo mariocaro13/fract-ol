@@ -6,7 +6,7 @@
 /*   By: mcaro-ro <mcaro-ro@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 12:03:49 by mcaro-ro          #+#    #+#             */
-/*   Updated: 2024/11/18 21:04:33 by mcaro-ro         ###   ########.fr       */
+/*   Updated: 2024/11/18 21:50:03 by mcaro-ro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,14 @@ void	mandelbrot(int x, int y, t_fractal *fractal)
 		z = ft_sum_complex(ft_square_complex(z), c);
 		if ((ft_hypotenuse(z.r, z.i)) > ESCAPE_VALUE)
 		{
-			color = ft_map(iter, BLACK, WHITE, fractal->num_of_iterations);
+			color = ft_map(iter, BLACK, CYAN_BLUE,
+					fractal->num_of_iterations);
 			ft_mlx_pixel_put(x, y, &fractal->img, color);
 			return ;
 		}
 		iter++;
 	}
-	ft_mlx_pixel_put(x, y, &fractal->img, BLACK);
+	ft_mlx_pixel_put(x, y, &fractal->img, EGYPTIAN_BLUE);
 }
 
 void	draw_mandelbrot(t_fractal *fractal)
