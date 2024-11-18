@@ -6,7 +6,7 @@
 /*   By: mcaro-ro <mcaro-ro@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 06:58:17 by mcaro-ro          #+#    #+#             */
-/*   Updated: 2024/11/18 19:31:25 by mcaro-ro         ###   ########.fr       */
+/*   Updated: 2024/11/18 21:26:29 by mcaro-ro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 /** INCLUDES */
 # include "minilibx-linux/mlx.h"
+# include <X11/X.h>
 # include <X11/keysym.h>
 # include <math.h>
 # include <stdio.h> // TODO debugging
@@ -26,8 +27,8 @@
 # define HEIGHT 1000
 
 /** LOGIC */
-# define NUM_OF_ITERATIONS 42
-# define ESCAPE_VALUE 4
+# define NUM_OF_ITERATIONS 10
+# define ESCAPE_VALUE 2
 # define COMPLEX_MIN -2.0
 # define COMPLEX_MAX 2.0
 
@@ -73,6 +74,10 @@ typedef struct s_fractal
 	void		*mlx_connection;
 	void		*mlx_window;
 	t_img_data	img;
+	int			num_of_iterations;
+	double		offset_x;
+	double		offset_y;
+	double		zoom;
 }				t_fractal;
 
 /** STRINGS UTILS */
@@ -80,11 +85,17 @@ int				ft_strncmp(const char *s1, const char *s2, size_t n);
 
 void			ft_putstr_fd(char *s, int fd);
 
-/** MINILIBX-LINUX UTILS */
+/** MINILIBX-LINUX */
 void			ft_mlx_clean(void *mlx_connection, void *mlx_window);
 int				ft_mlx_handle_key(int keysym, t_fractal *mlx);
 
 void			ft_mlx_pixel_put(int x, int y, t_img_data *img, int color);
+
+int				ft_mlx_handle_key(int keysym, t_fractal *fractal);
+
+int				ft_mlx_handle_mouse(int button, int x, int y, t_fractal *fractal);
+
+int				ft_mlx_handle_close(t_fractal *mlx);
 
 /** MATH UTILS */
 t_complex		ft_sum_complex(t_complex z1, t_complex z2);

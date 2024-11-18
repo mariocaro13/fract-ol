@@ -6,7 +6,7 @@
 /*   By: mcaro-ro <mcaro-ro@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 09:43:13 by mcaro-ro          #+#    #+#             */
-/*   Updated: 2024/11/18 18:26:08 by mcaro-ro         ###   ########.fr       */
+/*   Updated: 2024/11/18 19:39:52 by mcaro-ro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,14 +31,4 @@ void	ft_mlx_pixel_put(int x, int y, t_img_data *img, int color)
 
 	offset = ft_offset(x, y, img->line_length, img->bits_per_pixel);
 	*(unsigned int *)(img->pixels_ptr + offset) = color;
-}
-
-int	ft_mlx_handle_key(int keysym, t_fractal *mlx)
-{
-	if (keysym == XK_Escape)
-	{
-		ft_mlx_clean(mlx->mlx_connection, mlx->mlx_window);
-		exit(EXIT_SUCCESS);
-	}
-	return (EXIT_SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: mcaro-ro <mcaro-ro@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 19:05:16 by mcaro-ro          #+#    #+#             */
-/*   Updated: 2024/11/18 18:05:07 by mcaro-ro         ###   ########.fr       */
+/*   Updated: 2024/11/18 21:15:52 by mcaro-ro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,7 @@ int	main(int argc, char **argv)
 		fractal.name = argv[1];
 		if (ft_fractal_init(&fractal))
 			exit(EXIT_FAILURE);
-		// Render
 		ft_fractal_render(&fractal);
-		mlx_key_hook(fractal.mlx_window, ft_mlx_handle_key, &fractal);
-		// Loop
 		mlx_loop(fractal.mlx_connection);
 	}
 	else

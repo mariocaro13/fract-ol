@@ -6,7 +6,7 @@
 /*   By: mcaro-ro <mcaro-ro@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 12:03:49 by mcaro-ro          #+#    #+#             */
-/*   Updated: 2024/11/18 18:50:44 by mcaro-ro         ###   ########.fr       */
+/*   Updated: 2024/11/18 21:04:33 by mcaro-ro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,26 +16,28 @@ void	mandelbrot(int x, int y, t_fractal *fractal)
 {
 	t_complex	z;
 	t_complex	c;
-	int			iterations;
+	int			iter;
 	int			color;
 
-	iterations = 0;
+	iter = 0;
 	z.r = 0.0;
 	z.i = 0.0;
-	c.r = ft_map(x, COMPLEX_MIN, COMPLEX_MAX, WIDTH);
-	c.i = ft_map(y, COMPLEX_MAX, COMPLEX_MIN, HEIGHT);
-	while (iterations < NUM_OF_ITERATIONS)
+	c.r = (ft_map(x, COMPLEX_MIN, COMPLEX_MAX, WIDTH) * fractal->zoom)
+		+ fractal->offset_x;
+	c.i = (ft_map(y, COMPLEX_MAX, COMPLEX_MIN, HEIGHT) * fractal->zoom)
+		+ fractal->offset_y;
+	while (iter < fractal->num_of_iterations)
 	{
 		z = ft_sum_complex(ft_square_complex(z), c);
 		if ((ft_hypotenuse(z.r, z.i)) > ESCAPE_VALUE)
 		{
-			color = ft_map(iterations, BLACK, WHITE, NUM_OF_ITERATIONS);
+			color = ft_map(iter, BLACK, WHITE, fractal->num_of_iterations);
 			ft_mlx_pixel_put(x, y, &fractal->img, color);
 			return ;
 		}
-		iterations++;
+		iter++;
 	}
-	ft_mlx_pixel_put(x, y, &fractal->img, WHITE);
+	ft_mlx_pixel_put(x, y, &fractal->img, BLACK);
 }
 
 void	draw_mandelbrot(t_fractal *fractal)
