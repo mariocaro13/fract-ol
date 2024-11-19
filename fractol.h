@@ -6,7 +6,7 @@
 /*   By: mcaro-ro <mcaro-ro@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 06:58:17 by mcaro-ro          #+#    #+#             */
-/*   Updated: 2024/11/19 18:57:43 by mcaro-ro         ###   ########.fr       */
+/*   Updated: 2024/11/19 18:59:57 by mcaro-ro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,7 @@ typedef struct s_complex
  * 	1 for big-endian).
  *
  * Description:
-
-		* 	This structure holds the information needed to manage and manipulate an image
+ *	This structure holds the information needed to manage and manipulate an image
  *  in memory. It includes a pointer to the image object, a pointer
  * 	to the raw pixel data, the number of bits per pixel,
  * 	the length of each line of pixels in bytes,
@@ -212,8 +211,7 @@ void		ft_putstr_fd(char *s, int fd);
  * @str: The string to be converted.
  *
  * Description:
-
-		*	This function converts a null-terminated string to a floating-point number (double).
+ *	This function converts a null-terminated string to a floating-point number.
  *  It handles leading whitespace, optional signs, and decimal points.
  *  The function first parses the integer part of the number,
 	and then the decimal part,
