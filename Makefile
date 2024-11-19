@@ -6,7 +6,7 @@
 #    By: mcaro-ro <mcaro-ro@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/18 19:03:45 by mcaro-ro          #+#    #+#              #
-#    Updated: 2024/11/18 21:27:37 by mcaro-ro         ###   ########.fr        #
+#    Updated: 2024/11/19 18:18:33 by mcaro-ro         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,8 @@ SOURCE = main.c \
 	math_utils.c \
 	init.c \
 	fractal_render.c \
-	mandelbrot.c
+	mandelbrot.c \
+	julia.c
 	
 OBJECTS = $(SOURCE:.c=.o)
 
@@ -37,9 +38,14 @@ $(NAME): $(OBJECTS)
 
 all: $(NAME)
 
-run: re
+runm: re
 	@$(MAKE) all $(CFLAGS) --silent;
 	./$(NAME) "mandelbrot"
+
+runj: re
+	@$(MAKE) all $(CFLAGS) --silent;
+	./$(NAME) "julia" "0,285" "0,0"
+
 
 valgrind: re
 	@valgrind ./$(NAME) "mandelbrot"

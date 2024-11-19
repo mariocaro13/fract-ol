@@ -6,13 +6,18 @@
 /*   By: mcaro-ro <mcaro-ro@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 06:58:17 by mcaro-ro          #+#    #+#             */
-/*   Updated: 2024/11/19 00:19:05 by mcaro-ro         ###   ########.fr       */
+/*   Updated: 2024/11/19 18:09:27 by mcaro-ro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 /** TODO:
  *	- DOCUMENTATION:
  * 		- ft_fractal_render()
+ * 	- FEATURES:
+ * 		- Fractal Julia
+ * 		- Zoom al mouse
+ * 		- Otro Fractal
+ * 		- Maximizar ventana
  */
 #ifndef FRACTOL_H
 # define FRACTOL_H
@@ -61,7 +66,7 @@
  * @i: The imaginary part of the complex number.
  *
  * Description:
- *  This structure is used to represent complex numbers, 
+ *  This structure is used to represent complex numbers,
  * 	which consist of a real part and an imaginary part.
  *
  * Example usage:
@@ -86,10 +91,12 @@ typedef struct s_complex
  * 	1 for big-endian).
  *
  * Description:
- * 	This structure holds the information needed to manage and manipulate an image
+
+		* 	This structure holds the information needed to manage and manipulate an image
  *  in memory. It includes a pointer to the image object, a pointer
  * 	to the raw pixel data, the number of bits per pixel,
- * 	the length of each line of pixels in bytes, and the endian type of the image.
+ * 	the length of each line of pixels in bytes,
+		and the endian type of the image.
  *
  * Example usage:
  *  t_img_data img;
@@ -145,6 +152,7 @@ typedef struct s_fractal
 	double		offset_x;
 	double		offset_y;
 	double		zoom;
+	t_complex	init_point;
 }				t_fractal;
 
 /** STRINGS UTILS */
@@ -176,7 +184,7 @@ typedef struct s_fractal
  *  characters of s1 are found to be less than, to match, or be greater than
  *  the first n characters of s2, respectively.
  */
-int			ft_strncmp(const char *s1, const char *s2, size_t n);
+int				ft_strncmp(const char *s1, const char *s2, size_t n);
 
 /**
  * ft_putstr_fd - Writes a string to a file descriptor.
@@ -197,7 +205,29 @@ int			ft_strncmp(const char *s1, const char *s2, size_t n);
  * Return:
  *  This function does not return a value.
  */
-void		ft_putstr_fd(char *s, int fd);
+void			ft_putstr_fd(char *s, int fd);
+
+/**
+ * ft_atoi_float - Converts a string to a floating-point number.
+ * @str: The string to be converted.
+ *
+ * Description:
+
+		*	This function converts a null-terminated string to a floating-point number (double).
+ *  It handles leading whitespace, optional signs, and decimal points.
+ *  The function first parses the integer part of the number,
+	and then the decimal part,
+ *  and finally combines them to produce the resulting floating-point number.
+ *
+ * Example usage:
+ *  char *str = "   -123.456";
+ *  double num = ft_atoi_float(str);
+ *  // num will be -123.456
+ *
+ * Return:
+ *  The converted floating-point number (double).
+ */
+double			ft_atoi_float(char *str);
 
 /** MINILIBX-LINUX */
 /**
@@ -221,7 +251,7 @@ void		ft_putstr_fd(char *s, int fd);
  * Return:
  *  This function does not return a value.
  */
-void		ft_mlx_clean(void *mlx_connection, void *mlx_window);
+void			ft_mlx_clean(void *mlx_connection, void *mlx_window);
 
 /**
  * ft_offset - Computes the memory offset for a pixel in an image.
@@ -247,7 +277,7 @@ void		ft_mlx_clean(void *mlx_connection, void *mlx_window);
  * Return:
  *  The memory offset in bytes for the specified pixel.
  */
-int			ft_offset(int x, int y, int line_length, int bits_per_pixel);
+int				ft_offset(int x, int y, int line_length, int bits_per_pixel);
 
 /**
  * ft_mlx_pixel_put - Sets the color of a pixel in the image.
@@ -278,7 +308,7 @@ int			ft_offset(int x, int y, int line_length, int bits_per_pixel);
  * Return:
  *  This function does not return a value.
  */
-void		ft_mlx_pixel_put(int x, int y, t_img_data *img, int color);
+void			ft_mlx_pixel_put(int x, int y, t_img_data *img, int color);
 
 /** MINILIBX EVENTS */
 /**
@@ -316,7 +346,7 @@ void		ft_mlx_pixel_put(int x, int y, t_img_data *img, int color);
  * Return:
  *  This function does not return a value.
  */
-void		ft_events_init(t_fractal *fractal);
+void			ft_events_init(t_fractal *fractal);
 
 /**
  * ft_mlx_handle_key - Handles key press events for fractal manipulation.
@@ -364,7 +394,7 @@ void		ft_events_init(t_fractal *fractal);
  * Return:
  *  EXIT_SUCCESS on successful handling of the key event.
  */
-int			ft_mlx_handle_key(int keysym, t_fractal *fractal);
+int				ft_mlx_handle_key(int keysym, t_fractal *fractal);
 
 /**
  * ft_mlx_handle_mouse:
@@ -404,8 +434,8 @@ int			ft_mlx_handle_key(int keysym, t_fractal *fractal);
  * Return:
  *  EXIT_SUCCESS on successful handling of the mouse event.
  */
-int			ft_mlx_handle_mouse(int button, int x, int y,
-				t_fractal *fractal);
+int				ft_mlx_handle_mouse(int button, int x, int y,
+					t_fractal *fractal);
 
 /**
  * ft_mlx_handle_close - Handles the event of closing the fractal window.
@@ -430,7 +460,7 @@ int			ft_mlx_handle_mouse(int button, int x, int y,
  * Return:
  *  EXIT_SUCCESS after handling the close event and cleaning up resources.
  */
-int			ft_mlx_handle_close(t_fractal *mlx);
+int				ft_mlx_handle_close(t_fractal *mlx);
 
 /** MATH UTILS */
 /**
@@ -455,7 +485,7 @@ int			ft_mlx_handle_close(t_fractal *mlx);
  * Return:
  *  A new complex number representing the sum of z1 and z2.
  */
-t_complex	ft_sum_complex(t_complex z1, t_complex z2);
+t_complex		ft_sum_complex(t_complex z1, t_complex z2);
 
 /**
  * ft_square_complex - Computes the square of a complex number.
@@ -477,7 +507,7 @@ t_complex	ft_sum_complex(t_complex z1, t_complex z2);
  * Return:
  *  A new complex number representing the square of z.
  */
-t_complex	ft_square_complex(t_complex z);
+t_complex		ft_square_complex(t_complex z);
 
 /**
  * ft_hypotenuse - Computes the hypotenuse of a right triangle.
@@ -498,11 +528,11 @@ t_complex	ft_square_complex(t_complex z);
  * Return:
  *  The squared length of the hypotenuse.
  */
-int			ft_hypotenuse(double x, double y);
+int				ft_hypotenuse(double x, double y);
 
 /**
  * ft_map - Maps a value from one range to another.
- * @unscaled: The value to be mapped.
+ * @input: The value to be mapped.
  * @new_min: The minimum value of the new range.
  * @new_max: The maximum value of the new range.
  * @old_max: The maximum value of the original range (assumes old_min is 0).
@@ -523,8 +553,8 @@ int			ft_hypotenuse(double x, double y);
  * Return:
  *  The mapped value in the range [new_min, new_max].
  */
-double		ft_map(int unscaled, double new_min, double new_max,
-				double old_max);
+double			ft_map(int input, double new_min, double new_max,
+					double old_max);
 
 /** FRACTAL */
 /**
@@ -552,7 +582,7 @@ double		ft_map(int unscaled, double new_min, double new_max,
  * Return:
  *  This function does not return a value.
  */
-void		ft_data_init(t_fractal *fractal);
+void			ft_data_init(t_fractal *fractal);
 
 /**
  * ft_fractal_init:
@@ -604,9 +634,9 @@ void		ft_data_init(t_fractal *fractal);
  *  EXIT_SUCCESS on successful initialization, or MALLOC_ERROR if a memory
  *  allocation failure occurs.
  */
-int			ft_fractal_init(t_fractal *mlx);
+int				ft_fractal_init(t_fractal *mlx);
 
-void		ft_fractal_render(t_fractal *fractal);
+void			ft_fractal_render(t_fractal *fractal);
 
 /** MANDELBROT */
 /**
@@ -653,7 +683,7 @@ void		ft_fractal_render(t_fractal *fractal);
  *  // Initialize fractal, set parameters, etc.
  *  mandelbrot(x, y, &fractal);
  */
-void		mandelbrot(int x, int y, t_fractal *fractal);
+// void		ft_mandelbrot(int x, int y, t_fractal *fractal);
 
 /**
  * draw_mandelbrot - Draws the Mandelbrot set on the given image.
@@ -687,6 +717,11 @@ void		mandelbrot(int x, int y, t_fractal *fractal);
  *	// Initialize fractal, create window, etc.
  *		draw_mandelbrot(&fractal);
 **/
-void		draw_mandelbrot(t_fractal *fractal);
+void			ft_draw_mandelbrot(t_fractal *fractal);
 
+void			ft_mandelbrot(int x, int y, t_fractal *fractal);
+
+void			ft_draw_fractal(t_fractal *fractal, void (*ft_fractal)(int, int, t_fractal *));
+
+void			ft_julia(int x, int y, t_fractal *fractal);
 #endif

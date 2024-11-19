@@ -6,7 +6,7 @@
 /*   By: mcaro-ro <mcaro-ro@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 09:43:13 by mcaro-ro          #+#    #+#             */
-/*   Updated: 2024/11/18 21:17:05 by mcaro-ro         ###   ########.fr       */
+/*   Updated: 2024/11/19 18:09:21 by mcaro-ro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ void	ft_data_init(t_fractal *fractal)
 	fractal->offset_x = 0.0;
 	fractal->offset_y = 0.0;
 	fractal->zoom = 1.0;
+	fractal->init_point.r = 0.0;
+	fractal->init_point.i = 0.0;
 }
 
 void	ft_events_init(t_fractal *fractal)
@@ -50,8 +52,7 @@ int	ft_fractal_init(t_fractal *fractal)
 		return (MALLOC_ERROR);
 	}
 	fractal->img.pixels_ptr = mlx_get_data_addr(fractal->img.ptr,
-			&fractal->img.bits_per_pixel,
-			&fractal->img.line_length,
+			&fractal->img.bits_per_pixel, &fractal->img.line_length,
 			&fractal->img.endian);
 	ft_events_init(fractal);
 	return (EXIT_SUCCESS);
