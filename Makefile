@@ -6,7 +6,7 @@
 #    By: mcaro-ro <mcaro-ro@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/18 19:03:45 by mcaro-ro          #+#    #+#              #
-#    Updated: 2024/11/19 18:18:33 by mcaro-ro         ###   ########.fr        #
+#    Updated: 2024/11/19 19:08:32 by mcaro-ro         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,7 @@ SOURCE = main.c \
 	mlx_events.c \
 	math_utils.c \
 	init.c \
-	fractal_render.c \
+	render.c \
 	mandelbrot.c \
 	julia.c
 	
