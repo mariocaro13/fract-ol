@@ -6,7 +6,7 @@
 /*   By: mcaro-ro <mcaro-ro@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 12:03:49 by mcaro-ro          #+#    #+#             */
-/*   Updated: 2024/11/19 18:11:53 by mcaro-ro         ###   ########.fr       */
+/*   Updated: 2024/11/19 18:39:04 by mcaro-ro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,21 +39,4 @@ void	ft_mandelbrot(int x, int y, t_fractal *fractal)
 		iter++;
 	}
 	ft_mlx_pixel_put(x, y, &fractal->img, EGYPTIAN_BLUE);
-}
-
-void	ft_draw_mandelbrot(t_fractal *fractal)
-{
-	t_complex	z;
-
-	z.i = -1;
-	while (++z.i < HEIGHT)
-	{
-		z.r = -1;
-		while (++z.r < WIDTH)
-		{
-			ft_mandelbrot(z.r, z.i, fractal);
-		}
-	}
-	mlx_put_image_to_window(fractal->mlx_connection, fractal->mlx_window,
-		fractal->img.ptr, 0, 0);
 }

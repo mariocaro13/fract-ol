@@ -6,7 +6,7 @@
 /*   By: mcaro-ro <mcaro-ro@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 19:05:16 by mcaro-ro          #+#    #+#             */
-/*   Updated: 2024/11/19 18:10:22 by mcaro-ro         ###   ########.fr       */
+/*   Updated: 2024/11/19 18:35:17 by mcaro-ro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	main(int argc, char **argv)
 			fractal.init_point.r = ft_atoi_float(argv[2]);
 			fractal.init_point.i = ft_atoi_float(argv[3]);
 		}
-		ft_fractal_render(&fractal);
+		ft_render(&fractal);
 		mlx_loop(fractal.mlx_connection);
 	}
 	else

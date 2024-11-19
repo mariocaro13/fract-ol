@@ -6,7 +6,7 @@
 /*   By: mcaro-ro <mcaro-ro@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 19:39:18 by mcaro-ro          #+#    #+#             */
-/*   Updated: 2024/11/19 17:36:56 by mcaro-ro         ###   ########.fr       */
+/*   Updated: 2024/11/19 18:35:17 by mcaro-ro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	ft_mlx_handle_key(int keysym, t_fractal *fractal)
 		fractal->num_of_iterations += 10;
 	else if (keysym == XK_minus)
 		fractal->num_of_iterations -= 10;
-	ft_fractal_render(fractal);
+	ft_render(fractal);
 	return (EXIT_SUCCESS);
 }
 
@@ -44,7 +44,7 @@ int	ft_mlx_handle_mouse(int button, int x, int y, t_fractal *fractal)
 		fractal->zoom *= 0.95;
 	else if (button == Button5)
 		fractal->zoom *= 1.05;
-	ft_fractal_render(fractal);
+	ft_render(fractal);
 	return (EXIT_SUCCESS);
 }
 
