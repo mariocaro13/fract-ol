@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fractol.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcaro-ro <mcaro-ro@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: mcaro-ro <mcaro-ro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 06:58:17 by mcaro-ro          #+#    #+#             */
-/*   Updated: 2024/11/29 17:30:53 by mcaro-ro         ###   ########.fr       */
+/*   Updated: 2024/11/30 00:28:29 by mcaro-ro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 # define HEIGHT 800
 
 /** LOGIC */
-# define NUM_OF_ITERATIONS 5
+# define MIN_ITERATIONS 5
 # define ESCAPE_VALUE 4
 # define COMPLEX_MIN -2.0
 # define COMPLEX_MAX 2.0
@@ -36,20 +36,20 @@
 # define ERROR_MESSAGE "Usage: ./fractol [mandelbrot | julia <real> <i>]\n"
 
 /** COLORS */
-# define RED 0xFF0000
-# define GREEN 0x00FF00
-# define BLUE 0x0000FF
-# define BLACK 0x000000
-# define WHITE 0xFFFFFF
-# define NEON_GREEN 0x39FF14
-# define ELECTRIC_BLUE 0x7DF9FF
-# define VIVID_PINK 0xFF1493
-# define BRIGHT_ORANGE 0xFFA500
-# define LUMINOUS_YELLOW 0xFFFF66
-# define CYAN_BLUE 0x00FFFF
-# define ULTRAVIOLET 0x7F00FF
-# define DARK_BLUE 0x00008B
-# define EGYPTIAN_BLUE 0x1034A6
+# define RED 0X000FF0000
+# define GREEN 0X0000FF00
+# define BLUE 0X0000FF
+# define BLACK 0X000000	
+# define WHITE 0XFFFFFF
+# define NEON_GREEN 0X39FF14
+# define ELECTRIC_BLUE 0X7DF9FF
+# define VIVID_PINK 0XFF1493
+# define BRIGHT_ORANGE 0XFFA500
+# define YELLOW 0XFFFF66
+# define CYAN_BLUE 0X00FFFF
+# define ULTRAVIOLET 0X7F00FF
+# define DARK_BLUE 0X00008B
+# define EGYPTIAN_BLUE 0X1034A6
 
 /** struct s_complex:
  * 	- Data structure for representing complex numbers.
@@ -393,7 +393,7 @@ int			ft_offset(int x, int y, int line_length, int bits_per_pixel);
  *  // Initialize img, set line_length, bits_per_pixel, and pixels_ptr...
  *  int x = 10;
  *  int y = 5;
- *  int color = 0xFFFFFF; // White color
+ *  int color = 0XFFFFFF; // White color
  *  ft_mlx_pixel_put(x, y, &img, color);
  *  // This sets the pixel at (10, 5) to white
  *
@@ -532,40 +532,6 @@ int			ft_mlx_handle_key(int keysym, t_fractal *fractal);
  *  EXIT_SUCCESS on successful handling of the mouse event.
  */
 int			ft_mlx_handle_mouse(int button, int x, int y, t_fractal *fractal);
-
-/** ft_mlx_handle_resize:
- * 	- Handles the window resize event for the fractal application.
- *
- * Params:
- * 	@fractal: Pointer to the fractal data structure.
- *
- * Description:
- * 	This function is called when the window is resized. It re-renders the
- * 	fractal by calling the 'ft_render' function.
- *
- * Specifically, the function:
- * 	- Calls 'ft_render(fractal)' to re-render the fractal.
- *
- * Helper functions:
- * - ft_render(t_fractal *fractal):
- * 		Renders the fractal.
- *
- * Constants:
- * - EXIT_SUCCESS: The success code returned when the resize event is handled
- * 	successfully.
- *
- * Example usage:
- * 	// Assuming mlx_hook or similar function is set up to call this on resize
- * 	int result = ft_mlx_handle_resize(&fractal);
- * 	if (result == EXIT_SUCCESS) {
- * 	// Resize handled successfully
- * 	} else {
- * 	// Handle resize error
- * 	}
- *
- * Return:
- * 	EXIT_SUCCESS on successful handling of the resize event. */
-int			ft_mlx_handle_resize(t_fractal *fractal);
 
 /** ft_mlx_handle_close:
  *	- Handles the event of closing the fractal window.
