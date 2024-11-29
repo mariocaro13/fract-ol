@@ -6,11 +6,12 @@
 /*   By: mcaro-ro <mcaro-ro@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 19:39:18 by mcaro-ro          #+#    #+#             */
-/*   Updated: 2024/11/19 19:12:25 by mcaro-ro         ###   ########.fr       */
+/*   Updated: 2024/11/25 20:08:52 by mcaro-ro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
+#include <stdio.h>
 
 int	ft_mlx_handle_key(int keysym, t_fractal *fractal)
 {
@@ -52,5 +53,11 @@ int	ft_mlx_handle_close(t_fractal *mlx)
 {
 	ft_mlx_clean(mlx->mlx_connection, mlx->mlx_window);
 	exit(EXIT_SUCCESS);
+	return (EXIT_SUCCESS);
+}
+
+int	ft_mlx_handle_resize(t_fractal *fractal)
+{
+	ft_render(fractal);
 	return (EXIT_SUCCESS);
 }

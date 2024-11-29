@@ -6,14 +6,9 @@
 /*   By: mcaro-ro <mcaro-ro@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 19:05:16 by mcaro-ro          #+#    #+#             */
-/*   Updated: 2024/11/19 18:35:17 by mcaro-ro         ###   ########.fr       */
+/*   Updated: 2024/11/25 22:12:07 by mcaro-ro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-/*
- * Julia and Mandelbrot
- * Able to take command line args to shape Julia, i.e x y coordinates
- **/
 
 #include "fractol.h"
 
@@ -21,11 +16,11 @@ int	main(int argc, char **argv)
 {
 	t_fractal	fractal;
 
-	if ((2 == argc && !ft_strncmp(argv[1], "mandelbrot", 10)) || (4 == argc
-			&& !ft_strncmp(argv[1], "julia", 5)))
+	if ((2 == argc && !ft_strncmp(argv[1], "mandelbrot", 10))
+		|| (4 == argc && !ft_strncmp(argv[1], "julia", 5)))
 	{
 		fractal.name = argv[1];
-		if (ft_fractal_init(&fractal))
+		if (ft_init(&fractal))
 			exit(EXIT_FAILURE);
 		if (4 == argc)
 		{

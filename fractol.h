@@ -6,16 +6,10 @@
 /*   By: mcaro-ro <mcaro-ro@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 06:58:17 by mcaro-ro          #+#    #+#             */
-/*   Updated: 2024/11/19 19:13:13 by mcaro-ro         ###   ########.fr       */
+/*   Updated: 2024/11/29 17:30:53 by mcaro-ro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/** TODO:
- * 	- FEATURES:
- * 		- Zoom al mouse
- * 		- Otro Fractal
- * 		- Maximizar ventana
- */
 #ifndef FRACTOL_H
 # define FRACTOL_H
 
@@ -28,12 +22,12 @@
 # include <unistd.h>
 
 /** WINDOW */
-# define WIDTH 1200
-# define HEIGHT 1000
+# define WIDTH 800
+# define HEIGHT 800
 
 /** LOGIC */
-# define NUM_OF_ITERATIONS 10
-# define ESCAPE_VALUE 2
+# define NUM_OF_ITERATIONS 5
+# define ESCAPE_VALUE 4
 # define COMPLEX_MIN -2.0
 # define COMPLEX_MAX 2.0
 
@@ -57,10 +51,12 @@
 # define DARK_BLUE 0x00008B
 # define EGYPTIAN_BLUE 0x1034A6
 
-/**
- * struct s_complex - Data structure for representing complex numbers.
- * @r: The real part of the complex number.
- * @i: The imaginary part of the complex number.
+/** struct s_complex:
+ * 	- Data structure for representing complex numbers.
+ *
+ * Params:
+ *	@r: The real part of the complex number.
+ *	@i: The imaginary part of the complex number.
  *
  * Description:
  *  This structure is used to represent complex numbers,
@@ -78,21 +74,23 @@ typedef struct s_complex
 	double		i;
 }				t_complex;
 
-/**
- * struct s_img_data - Data structure for storing image information.
- * @ptr: Pointer to the image object.
- * @pixels_ptr: Pointer to the pixel data of the image.
- * @bits_per_pixel: The number of bits per pixel in the image.
- * @line_length: The length of a line in bytes.
- * @endian: The endian type of the image data (0 for little-endian,
+/** struct s_img_data:
+ * 	- Data structure for storing image information.
+ *
+ * Params:
+ *	@ptr: Pointer to the image object.
+ *	@pixels_ptr: Pointer to the pixel data of the image.
+ *	@bits_per_pixel: The number of bits per pixel in the image.
+ *	@line_length: The length of a line in bytes.
+ *	@endian: The endian type of the image data (0 for little-endian,
  * 	1 for big-endian).
  *
  * Description:
- *	This structure holds the information needed to manage and manipulate an image
+ * 	Holds the information needed to manage and manipulate an image
  *  in memory. It includes a pointer to the image object, a pointer
  * 	to the raw pixel data, the number of bits per pixel,
  * 	the length of each line of pixels in bytes,
-		and the endian type of the image.
+ * 	and the endian type of the image.
  *
  * Example usage:
  *  t_img_data img;
@@ -110,18 +108,19 @@ typedef struct s_img_data
 	int			endian;
 }				t_img_data;
 
-/**
- * struct s_fractal:
- *	- Data structure for storing fractal parameters and resources.
- * @name: The name of the fractal.
- * @mlx_connection: Pointer to the MiniLibX connection object.
- * @mlx_window: Pointer to the MiniLibX window object.
- * @img: Image data structure containing information about the fractal image.
- * @num_of_iterations: Number of iterations for computing the fractal.
- * @offset_x: Offset in the x-axis for fractal positioning.
- * @offset_y: Offset in the y-axis for fractal positioning.
- * @zoom: Zoom level for the fractal.
- * @init_point: Initial point for the fractal (Used for Julia set).
+/** struct s_fractal:
+ * - Data structure for storing fractal parameters and resources.
+ *
+ * Params:
+ *	@name: The name of the fractal.
+ *	@mlx_connection: Pointer to the MiniLibX connection object.
+ *	@mlx_window: Pointer to the MiniLibX window object.
+ *	@img: Image data structure containing information about the fractal image.
+ *	@num_of_iterations: Number of iterations for computing the fractal.
+ *	@offset_x: Offset in the x-axis for fractal positioning.
+ *	@offset_y: Offset in the y-axis for fractal positioning.
+ *	@zoom: Zoom level for the fractal.
+ *	@init_point: Initial point for the fractal (Used for Julia set).
  *
  * Description:
  *  This structure holds all the necessary parameters and resources required
@@ -146,20 +145,22 @@ typedef struct s_fractal
 	char		*name;
 	void		*mlx_connection;
 	void		*mlx_window;
-	t_img_data	img;
 	int			num_of_iterations;
 	double		offset_x;
 	double		offset_y;
 	double		zoom;
+	t_img_data	img;
 	t_complex	init_point;
 }				t_fractal;
 
 /** STRINGS UTILS */
-/**
- * ft_strncmp - Compares up to n characters of two strings.
- * @s1: The first string to compare.
- * @s2: The second string to compare.
- * @n: The maximum number of characters to compare.
+/** ft_strncmp:
+ * 	- Compares up to n characters of two strings.
+ *
+ * Params:
+ *	@s1: The first string to compare.
+ *	@s2: The second string to compare.
+ *	@n: The maximum number of characters to compare.
  *
  * Description:
  *  This function compares up to n characters of the null-terminated strings s1
@@ -185,10 +186,12 @@ typedef struct s_fractal
  */
 int			ft_strncmp(const char *s1, const char *s2, size_t n);
 
-/**
- * ft_putstr_fd - Writes a string to a file descriptor.
- * @s: The string to be written.
- * @fd: The file descriptor to write to.
+/** ft_putstr_fd:
+ * 	- Writes a string to a file descriptor.
+ *
+ * Params:
+ * 	@s: The string to be written.
+ *	@fd: The file descriptor to write to.
  *
  * Description:
  *  This function writes the null-terminated string s to the file descriptor fd.
@@ -206,15 +209,17 @@ int			ft_strncmp(const char *s1, const char *s2, size_t n);
  */
 void		ft_putstr_fd(char *s, int fd);
 
-/**
- * ft_atoi_float - Converts a string to a floating-point number.
- * @str: The string to be converted.
+/** ft_atoi_float:
+ * 	- Converts a string to a floating-point number.
+ *
+ * Params:
+ *	@str: The string to be converted.
  *
  * Description:
  *	This function converts a null-terminated string to a floating-point number.
  *  It handles leading whitespace, optional signs, and decimal points.
  *  The function first parses the integer part of the number,
-	and then the decimal part,
+ *	and then the decimal part,
  *  and finally combines them to produce the resulting floating-point number.
  *
  * Example usage:
@@ -228,35 +233,122 @@ void		ft_putstr_fd(char *s, int fd);
 double		ft_atoi_float(char *str);
 
 /** MINILIBX-LINUX */
-/**
- * ft_mlx_clean - Cleans up MiniLibX resources.
- * @connection: Pointer to the MiniLibX connection object.
- * @window: Pointer to the MiniLibX window object.
+/** ft_mlx_init:
+ * - Initializes the MiniLibX connection and window.
+ *
+ * Params:
+ * @mlx: Pointer to the fractal data structure.
  *
  * Description:
- *  This function cleans up the resources allocated by MiniLibX.
- *	It first checks if the window pointer is not NULL, and if so,
- *	it destroys the window. It then destroys the display associated
- *	with the connection and frees the connection object itself.
+ * 	This function sets up the connection to the MiniLibX,
+ * 	and creates a new window.
+ * 	If the connection or window creation fails, it cleans up
+ * 	any allocated resources and returns an error code.
+ *
+ * Specifically, the function:
+ * 	- Establishes a connection to MiniLibX.
+ * 	- Creates a new window with specified width, height, and title.
+ * 	- Cleans up allocated resources if any step fails.
+ *
+ * Helper functions:
+ * 	- ft_mlx_clean(void *mlx_connection, void *mlx_window):
+ * 		Cleans up MiniLibX resources in case of failure.
+ *
+ * Constants:
+ * 	- WIDTH: The width of the window.
+ * 	- HEIGHT: The height of the window.
+ * 	- MALLOC_ERROR: The error code returned when memory allocation fails.
+ * 	- EXIT_SUCCESS: The success code returned when initialization is successful.
  *
  * Example usage:
- *  void *mlx_connection = mlx_init();
- *  void *mlx_window = mlx_new_window(mlx_connection, 800, 600, "Fractal");
- *  // Perform operations with the window...
- *  ft_mlx_clean(mlx_connection, mlx_window);
- *  // This will destroy the window, display, and free the connection.
+ * 	t_fractal fractal;
+ * 	int result = ft_mlx_init(&fractal);
+ * 	if (result == EXIT_SUCCESS) {
+ * 	// MiniLibX initialized successfully
+ * 	} else {
+ * 	// Handle initialization error
+ * 	}
  *
  * Return:
- *  This function does not return a value.
- */
+ * 	EXIT_SUCCESS on successful initialization,
+		or MALLOC_ERROR if a failure occurs.
+ * */
+int			ft_mlx_init(t_fractal *mlx);
+
+/** ft_mlx_img_init:
+ * 	- Initializes the MiniLibX image buffer.
+ * 
+ * Params:
+ * 	@mlx: Pointer to the fractal data structure.
+ * 
+ * Description:
+ * This function creates a new image buffer in MiniLibX,
+ * and retrieves the pixel data address of the image buffer.
+ * If the image creation fails, it cleans up any allocated resources,
+ * and returns an error code. *
+ * 
+ * Specifically, the function:
+ * 	- Creates a new image buffer with specified width and height.
+ * 	- Retrieves the pixel data address of the image buffer.
+ * 	- Cleans up allocated resources if image creation fails.
+ * 
+ * Helper functions:
+ * 	- ft_mlx_clean(void *mlx_connection, void *mlx_window):
+ * 		Cleans up MiniLibX resources in case of failure.
+ * 
+ * Constants:
+ * 	- WIDTH: The width of the image.
+ * 	- HEIGHT: The height of the image.
+ * 	- MALLOC_ERROR: The error code returned when memory allocation fails.
+ * 	- EXIT_SUCCESS: The success code returned when initialization is successful.
+ * 
+ * Example usage:
+ * 	t_fractal fractal;
+ * 	int result = ft_mlx_img_init(&fractal);
+ * 	if (result == EXIT_SUCCESS) { 
+ * 	//MiniLibX image buffer initialized successfully
+ * 	} else {
+ * 	// Handle initialization error
+ * 	}
+ * 
+ * Return:
+ * 	EXIT_SUCCESS on successful initialization, or MALLOC_ERROR if failure.
+ * */
+int			ft_mlx_img_init(t_fractal *mlx);
+
+/** ft_mlx_clean:
+ * 	- Cleans up MiniLibX resources.
+ *
+ * Params:
+ *	@connection: Pointer to the MiniLibX connection object.
+ *	@window: Pointer to the MiniLibX window object.
+ *
+ * Description:
+ * 	This function cleans up the resources allocated by MiniLibX.
+ * 	It first checks if the window pointer is not NULL, and if so,
+ * 	it destroys the window, and then the display associated
+ * 	with the connection and frees the connection object itself.
+ *
+ * Example usage:
+ * 	void *mlx_connection = mlx_init();
+ * 	void *mlx_window = mlx_new_window(mlx_connection, 800, 600, "Fractal");
+ * 	// Perform operations with the window...
+ * 	ft_mlx_clean(mlx_connection, mlx_window);
+ * 	// This will destroy the window, display, and free the connection.
+ *
+ * Return:
+ * 	This function does not return a value.
+ * */
 void		ft_mlx_clean(void *mlx_connection, void *mlx_window);
 
-/**
- * ft_offset - Computes the memory offset for a pixel in an image.
- * @x: The x-coordinate of the pixel.
- * @y: The y-coordinate of the pixel.
- * @line_length: The length of a line in bytes.
- * @bits_per_pixel: The number of bits per pixel.
+/** ft_offset:
+ * 	- Computes the memory offset for a pixel in an image.
+ *
+ * Params:
+ *	@x: The x-coordinate of the pixel.
+ *	@y: The y-coordinate of the pixel.
+ *	@line_length: The length of a line in bytes.
+ *	@bits_per_pixel: The number of bits per pixel.
  *
  * Description:
  *  This function calculates the offset for a pixel in an image buffer,
@@ -277,12 +369,14 @@ void		ft_mlx_clean(void *mlx_connection, void *mlx_window);
  */
 int			ft_offset(int x, int y, int line_length, int bits_per_pixel);
 
-/**
- * ft_mlx_pixel_put - Sets the color of a pixel in the image.
- * @x: The x-coordinate of the pixel.
- * @y: The y-coordinate of the pixel.
- * @img: Pointer to the image data structure.
- * @color: The color to set the pixel to (as an integer).
+/** ft_mlx_pixel_put:
+ * 	- Sets the color of a pixel in the image.
+ *
+ * Params:
+ *	@x: The x-coordinate of the pixel.
+ *	@y: The y-coordinate of the pixel.
+ *	@img: Pointer to the image data structure.
+ *	@color: The color to set the pixel to (as an integer).
  *
  * Description:
  *  This function sets the color of a specific pixel in the image buffer.
@@ -309,9 +403,11 @@ int			ft_offset(int x, int y, int line_length, int bits_per_pixel);
 void		ft_mlx_pixel_put(int x, int y, t_img_data *img, int color);
 
 /** MINILIBX EVENTS */
-/**
- * ft_events_init - Initializes event hooks for the fractal window.
- * @fractal: Pointer to the fractal data structure.
+/** ft_events_init:
+ * 	- Initializes event hooks for the fractal window.
+ *
+ * Params:
+ *	@fractal: Pointer to the fractal data structure.
  *
  * Description:
  * 	This function sets up event hooks for the fractal window
@@ -346,10 +442,12 @@ void		ft_mlx_pixel_put(int x, int y, t_img_data *img, int color);
  */
 void		ft_events_init(t_fractal *fractal);
 
-/**
- * ft_mlx_handle_key - Handles key press events for fractal manipulation.
- * @keysym: The key symbol of the pressed key.
- * @fractal: Pointer to the fractal data structure.
+/** ft_mlx_handle_key:
+ * 	- Handles key press events for fractal manipulation.
+ *
+ * Params:
+ *	@keysym: The key symbol of the pressed key.
+ *	@fractal: Pointer to the fractal data structure.
  *
  * Description:
  *  This function handles key press events to manipulate the fractal's view and
@@ -394,13 +492,14 @@ void		ft_events_init(t_fractal *fractal);
  */
 int			ft_mlx_handle_key(int keysym, t_fractal *fractal);
 
-/**
- * ft_mlx_handle_mouse:
-	- Handles mouse button press events for fractal manipulation.
- * @button: The mouse button pressed.
- * @x: The x-coordinate of the mouse event.
- * @y: The y-coordinate of the mouse event.
- * @fractal: Pointer to the fractal data structure.
+/** ft_mlx_handle_mouse:
+ * 	- Handles mouse button press events for fractal manipulation.
+ *
+ * Params:
+ *	@button: The mouse button pressed.
+ *	@x: The x-coordinate of the mouse event.
+ *	@y: The y-coordinate of the mouse event.
+ * 	@fractal: Pointer to the fractal data structure.
  *
  * Description:
  *	This function handles mouse buttons events to manipulate the fractal's zoom.
@@ -434,36 +533,74 @@ int			ft_mlx_handle_key(int keysym, t_fractal *fractal);
  */
 int			ft_mlx_handle_mouse(int button, int x, int y, t_fractal *fractal);
 
-/**
- * ft_mlx_handle_close - Handles the event of closing the fractal window.
- * @mlx: Pointer to the fractal data structure.
+/** ft_mlx_handle_resize:
+ * 	- Handles the window resize event for the fractal application.
+ *
+ * Params:
+ * 	@fractal: Pointer to the fractal data structure.
  *
  * Description:
- *  This function handles the event of closing the fractal window. It cleans up
- *  the resources allocated by MiniLibX and exits the program. The function
- *  calls `ft_mlx_clean` to destroy the window and free the MiniLibX connection.
- *  After cleaning up the resources, it exits the program with a success status.
+ * 	This function is called when the window is resized. It re-renders the
+ * 	fractal by calling the 'ft_render' function.
+ *
+ * Specifically, the function:
+ * 	- Calls 'ft_render(fractal)' to re-render the fractal.
  *
  * Helper functions:
- *  - ft_mlx_clean(void *connection, void *window):
- *      Cleans up MiniLibX resources.
+ * - ft_render(t_fractal *fractal):
+ * 		Renders the fractal.
+ *
+ * Constants:
+ * - EXIT_SUCCESS: The success code returned when the resize event is handled
+ * 	successfully.
  *
  * Example usage:
- *  t_fractal fractal;
- *  // Initialize fractal, create window, etc.
- *  ft_mlx_handle_close(&fractal);
- *  // This will clean up resources and exit the program successfully.
+ * 	// Assuming mlx_hook or similar function is set up to call this on resize
+ * 	int result = ft_mlx_handle_resize(&fractal);
+ * 	if (result == EXIT_SUCCESS) {
+ * 	// Resize handled successfully
+ * 	} else {
+ * 	// Handle resize error
+ * 	}
  *
  * Return:
- *  EXIT_SUCCESS after handling the close event and cleaning up resources.
- */
+ * 	EXIT_SUCCESS on successful handling of the resize event. */
+int			ft_mlx_handle_resize(t_fractal *fractal);
+
+/** ft_mlx_handle_close:
+ *	- Handles the event of closing the fractal window.
+ *
+ * Params:
+ * 	@mlx: Pointer to the fractal data structure.
+ *
+ * Description:
+ * 	This function handles the event of closing the fractal window.
+ * 	It cleans up the resources allocated by MiniLibX and exits the program.
+ * 	The function calls 'ft_mlx_clean', to destroy the window and free the @mlx.
+ * 	After cleaning up the resources, it exits the program with a success status.
+ *
+ * Helper functions:
+ * - ft_mlx_clean(void *connection, void *window):
+ * 		Cleans up MiniLibX resources.
+ *
+ * Example usage:
+ * 	t_fractal fractal;
+ * // Initialize fractal, create window, etc.
+ * ft_mlx_handle_close(&fractal);
+ * // This will clean up resources and exit the program successfully.
+ *
+ * Return:
+ * 	EXIT_SUCCESS after handling the close event and cleaning up resources.
+ * */
 int			ft_mlx_handle_close(t_fractal *mlx);
 
 /** MATH UTILS */
-/**
- * ft_sum_complex - Computes the sum of two complex numbers.
- * @z1: The first complex number.
- * @z2: The second complex number.
+/** ft_sum_complex:
+ * 	- Computes the sum of two complex numbers.
+ *
+ * Params:
+ * 	@z1: The first complex number.
+ * 	@z2: The second complex number.
  *
  * Description:
  *  This function takes two complex numbers as input and returns their sum.
@@ -484,9 +621,11 @@ int			ft_mlx_handle_close(t_fractal *mlx);
  */
 t_complex	ft_sum_complex(t_complex z1, t_complex z2);
 
-/**
- * ft_square_complex - Computes the square of a complex number.
- * @z: The complex number to be squared.
+/** ft_square_complex:
+ * 	- Computes the square of a complex number.
+ *
+ * Params:
+ * 	@z: The complex number to be squared.
  *
  * Description:
  *  This function takes a complex number as input and returns its square.
@@ -506,10 +645,12 @@ t_complex	ft_sum_complex(t_complex z1, t_complex z2);
  */
 t_complex	ft_square_complex(t_complex z);
 
-/**
- * ft_hypotenuse - Computes the hypotenuse of a right triangle.
- * @x: The length of the first leg of the triangle.
- * @y: The length of the second leg of the triangle.
+/** ft_hypotenuse:
+ * 	- Computes the hypotenuse of a right triangle.
+ *
+ * Params:
+ * 	@x: The length of the first leg of the triangle.
+ * 	@y: The length of the second leg of the triangle.
  *
  * Description:
  *  This function calculates the hypotenuse of a right triangle given the
@@ -527,12 +668,14 @@ t_complex	ft_square_complex(t_complex z);
  */
 int			ft_hypotenuse(double x, double y);
 
-/**
- * ft_map - Maps a value from one range to another.
- * @input: The value to be mapped.
- * @new_min: The minimum value of the new range.
- * @new_max: The maximum value of the new range.
- * @old_max: The maximum value of the original range (assumes old_min is 0).
+/** ft_map:
+ * 	- Maps a value from one range to another.
+ *
+ * Params:
+ * 	@input: The value to be mapped.
+ * 	@new_min: The minimum value of the new range.
+ * 	@new_max: The maximum value of the new range.
+ * 	@old_max: The maximum value of the original range (assumes old_min is 0).
  *
  * Description:
  *  This function maps a value from the range [0, old_max] to the range
@@ -553,9 +696,11 @@ int			ft_hypotenuse(double x, double y);
 double		ft_map(int input, double new_min, double new_max, double old_max);
 
 /** FRACTAL */
-/**
- * ft_data_init - Initializes the data structure for fractal computations.
- * @fractal: Pointer to the fractal data structure.
+/** ft_data_init:
+ * 	- Initializes the data structure for fractal computations.
+ *
+ * Params:
+ * 	@fractal: Pointer to the fractal data structure.
  *
  * Description:
  *  This function initializes the fields of the fractal data structure with
@@ -582,64 +727,70 @@ double		ft_map(int input, double new_min, double new_max, double old_max);
  */
 void		ft_data_init(t_fractal *fractal);
 
-/**
- * ft_fractal_init:
+/** ft_init:
  * 	- Initializes the fractal data structure and related resources.
- * @fractal: Pointer to the fractal data structure.
+ *
+ * Params:
+ * 	@mlx: Pointer to the fractal data structure.
  *
  * Description:
- *  This function initializes the fractal data structure, creates a connection
- *  to the MiniLibX library, and sets up the necessary resources for rendering
- *  the fractal. It initializes the fractal parameters, creates a window, and
- *  sets up the image buffer. If any step fails, it cleans up the allocated
- *  resources and returns an error code.
+ * Initializes the fractal data structure,
+ * creates a connection to the MiniLibX library,
+ * and sets up the necessary resources for rendering the fractal.
+ * It initializes the fractal parameters,
+ * creates a window, and sets up the image buffer.
+ * If any step fails, cleans up the allocated resources and returns an error.
  *
- *  Specifically, the function:
- *  - Initializes the fractal data structure with default values.
- *  - Creates a connection to MiniLibX.
- *  - Creates a new window for rendering the fractal.
- *  - Creates a new image buffer for the fractal.
- *  - Retrieves the pixel data address of the image buffer.
- *  - Sets up event handlers for the window.
+ * Specifically, the function:
+ * 	- Initializes the fractal data structure with default values.
+ * 	- Creates a connection to MiniLibX.
+ * 	- Creates a new window for rendering the fractal.
+ * 	- Creates a new image buffer for the fractal.
+ * 	- Retrieves the pixel data address of the image buffer.
+ * 	- Sets up event handlers for the window.
  *
  * Helper functions:
- *  - ft_data_init(t_fractal *fractal):
- *      Initializes the fractal data structure with default values.
+ * 	- ft_data_init(t_fractal *mlx):
+ * 		Initializes the fractal data structure with default values.
  *
- *  - ft_mlx_clean(void *mlx_connection, void *mlx_window):
- *      Cleans up MiniLibX resources.
+ * - ft_mlx_init(t_fractal *mlx):
+ * 		Creates a connection to MiniLibX and creates a new window.
  *
- *  - ft_events_init(t_fractal *fractal):
- *      Initializes event hooks for the fractal window.
+ * - ft_mlx_img_init(t_fractal *mlx):
+ * 		Creates a new image buffer and retrieves its pixel data address.
+ *
+ * - ft_events_init(t_fractal *mlx):
+ * 		Initializes event hooks for the fractal window.
  *
  * Constants:
- *  - WIDTH: The width of the window and image.
- *  - HEIGHT: The height of the window and image.
- *  - MALLOC_ERROR: The error code returned when memory allocation fails.
- *  - EXIT_SUCCESS: The success code returned when initialization is successful.
+ * 	- WIDTH: The width of the window and image.
+ * 	- HEIGHT: The height of the window and image.
+ * 	- MALLOC_ERROR: The error code returned when memory allocation fails.
+ * 	- EXIT_SUCCESS: The success code returned when initialization is successful.
  *
  * Example usage:
- *  t_fractal fractal;
- *  fractal.name = "Mandelbrot";
- *  int result = ft_fractal_init(&fractal);
- *  if (result == EXIT_SUCCESS) {
- *      // Fractal initialized successfully
- *  } else {
- *      // Handle initialization error
- *  }
+ * 	t_fractal fractal;
+ * 	fractal.name = "Mandelbrot";
+ * 	int result = ft_init(&fractal);
+ * 	if (result == EXIT_SUCCESS) {
+ * 	// Fractal initialized successfully
+ * 	} else {
+ * 	// Handle initialization error * }
  *
  * Return:
- *  EXIT_SUCCESS on successful initialization, or MALLOC_ERROR if a memory
- *  allocation failure occurs.
- */
-int			ft_fractal_init(t_fractal *mlx);
+ * 	EXIT_SUCCESS on successful initialization, or MALLOC_ERROR
+ * 	if a memory allocation failure occurs.
+ * */
+int			ft_init(t_fractal *mlx);
 
 /** MANDELBROT */
-/**
- * mandelbrot - Computes and colors a point in the Mandelbrot set.
- * @x: The x-coordinate of the point in the image.
- * @y: The y-coordinate of the point in the image.
- * @fractal: Pointer to the fractal data structure.
+/** mandelbrot:
+ * 	- Computes and colors a point in the Mandelbrot set.
+ *
+ * Params:
+ * 	@x: The x-coordinate of the point in the image.
+ * 	@y: The y-coordinate of the point in the image.
+ * 	@fractal: Pointer to the fractal data structure.
  *
  * Description:
  *  This function calculates if a given point (x, y) belongs to the
@@ -682,11 +833,13 @@ int			ft_fractal_init(t_fractal *mlx);
 void		ft_mandelbrot(int x, int y, t_fractal *fractal);
 
 /** JULIA */
-/**
- * ft_julia - Computes and colors a point in the Julia set.
- * @x: The x-coordinate of the point in the image.
- * @y: The y-coordinate of the point in the image.
- * @fractal: Pointer to the fractal data structure.
+/** ft_julia:
+ * 	- Computes and colors a point in the Julia set.
+ *
+ * Params:
+ *	@x: The x-coordinate of the point in the image.
+ * 	@y: The y-coordinate of the point in the image.
+ * 	@fractal: Pointer to the fractal data structure.
  *
  * Description:
  *  This function calculates if a given point (x, y) belongs to the
@@ -729,15 +882,16 @@ void		ft_mandelbrot(int x, int y, t_fractal *fractal);
 void		ft_julia(int x, int y, t_fractal *fractal);
 
 /** RENDER */
-/**
- * ft_render:
- *	- Determines which fractal to render and calls the appropriate function.
- * @fractal: Pointer to the fractal data structure.
+/** ft_render:
+ * - Determines which fractal to render and calls the appropriate function.
+ *
+ * Params:
+ * 	@fractal: Pointer to the fractal data structure.
  *
  * Description:
  *  This function checks the name of the fractal specified in the fractal
  *  data structure and assigns the corresponding fractal function. Then
- *  calls `ft_render_fractal` with the selected fractal function to render
+ *  calls 'ft_render_fractal' with the selected fractal function to render
  *  the fractal on the screen.
  *
  * Helper functions:
@@ -755,10 +909,12 @@ void		ft_julia(int x, int y, t_fractal *fractal);
  */
 void		ft_render(t_fractal *fractal);
 
-/**
- * ft_render_fractal - Renders a fractal using the provided fractal function.
- * @fractal: Pointer to the fractal data structure.
- * @ft_fractal: Function pointer to the specific fractal calculation function.
+/** ft_render_fractal:
+ * 	- Renders a fractal using the provided fractal function.
+ *
+ * Params:
+ * 	@fractal: Pointer to the fractal data structure.
+ * 	@ft_fractal: Function pointer to the specific fractal calculation function.
  *
  * Description:
  *  This function iterates over each pixel in the window, applies the provided
