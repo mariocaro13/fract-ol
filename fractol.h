@@ -6,7 +6,7 @@
 /*   By: mcaro-ro <mcaro-ro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 06:58:17 by mcaro-ro          #+#    #+#             */
-/*   Updated: 2024/11/30 05:44:22 by mcaro-ro         ###   ########.fr       */
+/*   Updated: 2024/11/30 16:32:08 by mcaro-ro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -317,13 +317,12 @@ int			ft_mlx_img_init(t_fractal *mlx);
  * 	- Cleans up MiniLibX resources.
  *
  * Params:
- *	@connection: Pointer to the MiniLibX connection object.
- *	@window: Pointer to the MiniLibX window object.
+ *	@fractal: Pointer to the fractal with the MiniLibX connection object.
  *
  * Description:
  * 	This function cleans up the resources allocated by MiniLibX.
  * 	It first checks if the window pointer is not NULL, and if so,
- * 	it destroys the window, and then the display associated
+ * 	it destroys the img and the window, and then the display associated
  * 	with the connection and frees the connection object itself.
  *
  * Example usage:
@@ -336,7 +335,7 @@ int			ft_mlx_img_init(t_fractal *mlx);
  * Return:
  * 	This function does not return a value.
  * */
-void		ft_mlx_clean(void *mlx_connection, void *mlx_window);
+void		ft_mlx_clean(t_fractal *fractal);
 
 /** ft_offset:
  * 	- Computes the memory offset for a pixel in an image.

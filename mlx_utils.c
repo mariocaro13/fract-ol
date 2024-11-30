@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mlx_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcaro-ro <mcaro-ro@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: mcaro-ro <mcaro-ro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 09:43:13 by mcaro-ro          #+#    #+#             */
-/*   Updated: 2024/11/25 18:57:28 by mcaro-ro         ###   ########.fr       */
+/*   Updated: 2024/11/30 16:20:53 by mcaro-ro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	ft_mlx_init(t_fractal *mlx)
 			mlx->name);
 	if (NULL == mlx->mlx_window)
 	{
-		ft_mlx_clean(mlx->mlx_connection, NULL);
+		ft_mlx_clean(mlx);
 		return (MALLOC_ERROR);
 	}
 	return (EXIT_SUCCESS);
@@ -32,7 +32,7 @@ int	ft_mlx_img_init(t_fractal *mlx)
 	mlx->img.ptr = mlx_new_image(mlx->mlx_connection, WIDTH, HEIGHT);
 	if (NULL == mlx->img.ptr)
 	{
-		ft_mlx_clean(mlx->mlx_connection, mlx->mlx_window);
+		ft_mlx_clean(mlx);
 		return (MALLOC_ERROR);
 	}
 	mlx->img.pixels_ptr = mlx_get_data_addr(mlx->img.ptr,
@@ -40,12 +40,15 @@ int	ft_mlx_img_init(t_fractal *mlx)
 	return (EXIT_SUCCESS);
 }
 
-void	ft_mlx_clean(void *connection, void *window)
+void	ft_mlx_clean(t_fractal *fractal)
 {
-	if (NULL != window)
-		mlx_destroy_window(connection, window);
-	mlx_destroy_display(connection);
-	free(connection);
+	if (NULL != fractal->mlx_window)
+	{
+		mlx_destroy_image(fractal->mlx_connection, fractal->img.ptr);
+		mlx_destroy_window(fractal->mlx_connection, fractal->mlx_window);
+	}
+	mlx_destroy_display(fractal->mlx_connection);
+	free(fractal->mlx_connection);
 }
 
 int	ft_offset(int x, int y, int line_length, int bits_per_pixel)

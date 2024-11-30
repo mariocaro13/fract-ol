@@ -6,7 +6,7 @@
 /*   By: mcaro-ro <mcaro-ro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 19:05:16 by mcaro-ro          #+#    #+#             */
-/*   Updated: 2024/11/30 02:38:23 by mcaro-ro         ###   ########.fr       */
+/*   Updated: 2024/11/30 16:15:06 by mcaro-ro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,6 @@ int	main(int argc, char **argv)
 		ft_putstr_fd(USAGE, STDERR_FILENO);
 		exit(EXIT_FAILURE);
 	}
-	ft_mlx_clean(fractal.mlx_connection, fractal.mlx_window);
+	ft_mlx_clean(&fractal);
 	return (EXIT_SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: mcaro-ro <mcaro-ro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 19:39:18 by mcaro-ro          #+#    #+#             */
-/*   Updated: 2024/11/30 05:40:55 by mcaro-ro         ###   ########.fr       */
+/*   Updated: 2024/11/30 16:16:22 by mcaro-ro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,24 +37,23 @@ int	ft_mlx_handle_key(int keysym, t_fractal *fractal)
 	return (EXIT_SUCCESS);
 }
 
-int ft_mlx_handle_mouse(int button, int x, int y, t_fractal *fractal)
+int	ft_mlx_handle_mouse(int button, int x, int y, t_fractal *fractal)
 {
-    fractal->mouse.r = x;
-    fractal->mouse.i = y;
-    if (button == Button4)
+	fractal->mouse.r = x;
+	fractal->mouse.i = y;
+	if (button == Button4)
 		fractal->zoom *= 0.95;
-    else if (button == Button5)
+	else if (button == Button5)
 		fractal->zoom *= 1.05;
-    else
+	else
 		return (EXIT_FAILURE);
-    ft_render(fractal);
-    return (EXIT_SUCCESS);
+	ft_render(fractal);
+	return (EXIT_SUCCESS);
 }
-
 
 int	ft_mlx_handle_close(t_fractal *mlx)
 {
-	ft_mlx_clean(mlx->mlx_connection, mlx->mlx_window);
+	ft_mlx_clean(mlx);
 	exit(EXIT_SUCCESS);
 	return (EXIT_SUCCESS);
 }

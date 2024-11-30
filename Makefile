@@ -6,14 +6,16 @@
 #    By: mcaro-ro <mcaro-ro@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/18 19:03:45 by mcaro-ro          #+#    #+#              #
-#    Updated: 2024/11/30 02:51:25 by mcaro-ro         ###   ########.fr        #
+#    Updated: 2024/11/30 17:13:44 by mcaro-ro         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g3  #-fsanitize=address
 
-MINILIBX = -Lminilibx-linux -lmlx_Linux
+MINILIBX_DIR = minilibx-linux
+MINILIBX_LIB = $(MINILIBX_DIR)/libmlx_Linux.a
+MINILIBX = -L$(MINILIBX_DIR) -lmlx_Linux
 MINILIBX_FLAGS = -lXext -lX11
 
 NAME = fractol
@@ -35,25 +37,28 @@ OBJECTS = $(SOURCE:.c=.o)
 %.o: %.c
 	$(CC) -c $< $(CFLAGS) -o $@
 
-$(NAME): $(OBJECTS)
-	$(CC) $(OBJECTS) $(MINILIBX) $(MINILIBX_FLAGS) -lm -o $(NAME)
+$(NAME): $(MINILIBX_LIB) $(OBJECTS)
+	$(CC) $(CFLAGS) $(OBJECTS) $(MINILIBX) $(MINILIBX_FLAGS) -lm -o $(NAME)
+
+$(MINILIBX_LIB):
+	@$(MAKE) -C $(MINILIBX_DIR)
 
 all: $(NAME)
 
 runm: re
-	@$(MAKE) all $(CFLAGS) --silent;
+	@$(MAKE) all --silent;
 	./$(NAME) "mandelbrot"
 
 runj: re
-	@$(MAKE) all $(CFLAGS) --silent;
+	@$(MAKE) all --silent;
 	./$(NAME) "julia" "0,285" "0,0"
 
 runb: re
-	@$(MAKE) all $(CFLAGS) --silent;
+	@$(MAKE) all --silent;
 	./$(NAME) "burning_ship"
 
 valgrind: re
-	@valgrind ./$(NAME) "mandelbrot"
+	valgrind ./$(NAME) mandelbrot
 
 clean:
 	@rm -f $(OBJECTS)
