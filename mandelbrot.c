@@ -6,7 +6,7 @@
 /*   By: mcaro-ro <mcaro-ro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 12:03:49 by mcaro-ro          #+#    #+#             */
-/*   Updated: 2024/11/29 20:04:07 by mcaro-ro         ###   ########.fr       */
+/*   Updated: 2024/11/30 05:29:46 by mcaro-ro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ void	ft_mandelbrot(int x, int y, t_fractal *fractal)
 	z.r = 0.0;
 	z.i = 0.0;
 	c.r = (ft_map(x, COMPLEX_MIN, COMPLEX_MAX, WIDTH) * fractal->zoom)
-		+ fractal->offset_x;
+		+ fractal->offset.r;
 	c.i = (ft_map(y, COMPLEX_MAX, COMPLEX_MIN, HEIGHT) * fractal->zoom)
-		+ fractal->offset_y;
+		+ fractal->offset.i;
 	while (iter < fractal->num_of_iterations)
 	{
 		z = ft_sum_complex(ft_square_complex(z), c);

@@ -6,7 +6,7 @@
 /*   By: mcaro-ro <mcaro-ro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 18:45:13 by mcaro-ro          #+#    #+#             */
-/*   Updated: 2024/11/30 00:32:07 by mcaro-ro         ###   ########.fr       */
+/*   Updated: 2024/11/30 02:38:07 by mcaro-ro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,12 @@ void	ft_render(t_fractal *fractal)
 {
 	void		(*ft_fractal)(int, int, t_fractal *);
 
-	if (!ft_strncmp(fractal->name, "mandelbrot", 10))
+	if (!ft_strcmp(fractal->name, MANDELBROT))
 		ft_fractal = ft_mandelbrot;
-	else if (!ft_strncmp(fractal->name, "julia", 5))
+	else if (!ft_strcmp(fractal->name, JULIA))
 		ft_fractal = ft_julia;
+	else if (!ft_strcmp(fractal->name, BURNING_SHIP))
+		ft_fractal = ft_burning_ship;
 	else
 		exit (EXIT_FAILURE);
 	ft_render_fractal(fractal, ft_fractal);

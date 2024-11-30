@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mcaro-ro <mcaro-ro@student.42madrid.com    +#+  +:+       +#+         #
+#    By: mcaro-ro <mcaro-ro@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/18 19:03:45 by mcaro-ro          #+#    #+#              #
-#    Updated: 2024/11/21 21:24:47 by mcaro-ro         ###   ########.fr        #
+#    Updated: 2024/11/30 02:51:25 by mcaro-ro         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,8 +25,10 @@ SOURCE = main.c \
 	math_utils.c \
 	init.c \
 	render.c \
+	view_control.c \
 	mandelbrot.c \
-	julia.c
+	julia.c \
+	burning_ship.c
 	
 OBJECTS = $(SOURCE:.c=.o)
 
@@ -34,7 +36,7 @@ OBJECTS = $(SOURCE:.c=.o)
 	$(CC) -c $< $(CFLAGS) -o $@
 
 $(NAME): $(OBJECTS)
-	$(CC) $(OBJECTS) $(MINILIBX) $(MINILIBX_FLAGS) -o $(NAME)
+	$(CC) $(OBJECTS) $(MINILIBX) $(MINILIBX_FLAGS) -lm -o $(NAME)
 
 all: $(NAME)
 
@@ -46,6 +48,9 @@ runj: re
 	@$(MAKE) all $(CFLAGS) --silent;
 	./$(NAME) "julia" "0,285" "0,0"
 
+runb: re
+	@$(MAKE) all $(CFLAGS) --silent;
+	./$(NAME) "burning_ship"
 
 valgrind: re
 	@valgrind ./$(NAME) "mandelbrot"

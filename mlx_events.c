@@ -6,48 +6,51 @@
 /*   By: mcaro-ro <mcaro-ro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 19:39:18 by mcaro-ro          #+#    #+#             */
-/*   Updated: 2024/11/30 00:26:52 by mcaro-ro         ###   ########.fr       */
+/*   Updated: 2024/11/30 05:40:55 by mcaro-ro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
-#include <stdio.h>
 
 int	ft_mlx_handle_key(int keysym, t_fractal *fractal)
 {
 	if (keysym == XK_Escape)
 		ft_mlx_handle_close(fractal);
 	else if (keysym == XK_Right)
-		fractal->offset_x += (0.5 * fractal->zoom);
+		ft_move_right(fractal);
 	else if (keysym == XK_Left)
-		fractal->offset_x -= (0.5 * fractal->zoom);
+		ft_move_left(fractal);
 	else if (keysym == XK_Up)
-		fractal->offset_y += (0.5 * fractal->zoom);
+		ft_move_up(fractal);
 	else if (keysym == XK_Down)
-		fractal->offset_y -= (0.5 * fractal->zoom);
+		ft_move_down(fractal);
 	else if (keysym == XK_equal || keysym == XK_plus)
+	{
 		fractal->num_of_iterations += 10;
+		ft_render(fractal);
+	}
 	else if (keysym == XK_minus && fractal->num_of_iterations > MIN_ITERATIONS)
+	{
 		fractal->num_of_iterations -= 10;
-	ft_render(fractal);
+		ft_render(fractal);
+	}
 	return (EXIT_SUCCESS);
 }
 
-int	ft_mlx_handle_mouse(int button, int x, int y, t_fractal *fractal)
+int ft_mlx_handle_mouse(int button, int x, int y, t_fractal *fractal)
 {
-	int	x_f;
-	int	y_f;
-
-	x_f = x;
-	y_f = x_f + y;
-	x_f = y_f + x;
-	if (button == Button4)
+    fractal->mouse.r = x;
+    fractal->mouse.i = y;
+    if (button == Button4)
 		fractal->zoom *= 0.95;
-	else if (button == Button5)
+    else if (button == Button5)
 		fractal->zoom *= 1.05;
-	ft_render(fractal);
-	return (EXIT_SUCCESS);
+    else
+		return (EXIT_FAILURE);
+    ft_render(fractal);
+    return (EXIT_SUCCESS);
 }
+
 
 int	ft_mlx_handle_close(t_fractal *mlx)
 {

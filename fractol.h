@@ -6,7 +6,7 @@
 /*   By: mcaro-ro <mcaro-ro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 06:58:17 by mcaro-ro          #+#    #+#             */
-/*   Updated: 2024/11/30 00:28:29 by mcaro-ro         ###   ########.fr       */
+/*   Updated: 2024/11/30 05:44:22 by mcaro-ro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@
 # include <unistd.h>
 
 /** WINDOW */
-# define WIDTH 800
-# define HEIGHT 800
+# define WIDTH 1400
+# define HEIGHT 1400
 
 /** LOGIC */
 # define MIN_ITERATIONS 5
@@ -33,7 +33,12 @@
 
 /** ERRORS DEFINITIONS */
 # define MALLOC_ERROR 1
-# define ERROR_MESSAGE "Usage: ./fractol [mandelbrot | julia <real> <i>]\n"
+# define USAGE "Usage: ./fractol [mandelbrot | burning_ship | julia <r> <i>]\n"
+
+/** FRACTALS NAMES */
+# define JULIA "julia"
+# define MANDELBROT "mandelbrot"
+# define BURNING_SHIP "burning_ship"
 
 /** COLORS */
 # define RED 0X000FF0000
@@ -41,15 +46,9 @@
 # define BLUE 0X0000FF
 # define BLACK 0X000000	
 # define WHITE 0XFFFFFF
-# define NEON_GREEN 0X39FF14
-# define ELECTRIC_BLUE 0X7DF9FF
-# define VIVID_PINK 0XFF1493
-# define BRIGHT_ORANGE 0XFFA500
+# define PINK 0XFF1493
+# define ORANGE 0XFFA500
 # define YELLOW 0XFFFF66
-# define CYAN_BLUE 0X00FFFF
-# define ULTRAVIOLET 0X7F00FF
-# define DARK_BLUE 0X00008B
-# define EGYPTIAN_BLUE 0X1034A6
 
 /** struct s_complex:
  * 	- Data structure for representing complex numbers.
@@ -117,9 +116,9 @@ typedef struct s_img_data
  *	@mlx_window: Pointer to the MiniLibX window object.
  *	@img: Image data structure containing information about the fractal image.
  *	@num_of_iterations: Number of iterations for computing the fractal.
- *	@offset_x: Offset in the x-axis for fractal positioning.
- *	@offset_y: Offset in the y-axis for fractal positioning.
+ *	@offset: Offset in for fractal positioning.
  *	@zoom: Zoom level for the fractal.
+ *	@mouse: Complex for save mouse position.
  *	@init_point: Initial point for the fractal (Used for Julia set).
  *
  * Description:
@@ -146,45 +145,43 @@ typedef struct s_fractal
 	void		*mlx_connection;
 	void		*mlx_window;
 	int			num_of_iterations;
-	double		offset_x;
-	double		offset_y;
 	double		zoom;
 	t_img_data	img;
+	t_complex	offset;
+	t_complex	mouse;
 	t_complex	init_point;
 }				t_fractal;
 
 /** STRINGS UTILS */
-/** ft_strncmp:
- * 	- Compares up to n characters of two strings.
+/** ft_strcmp:
+ * 	- Compares characters of two strings.
  *
  * Params:
  *	@s1: The first string to compare.
  *	@s2: The second string to compare.
- *	@n: The maximum number of characters to compare.
  *
  * Description:
- *  This function compares up to n characters of the null-terminated strings s1
- *  and s2. The comparison is done lexicographically. If the first n characters
- *  of both strings are identical, the function returns 0. If they differ, the
- *  function returns the difference between the first differing characters
- *  (treated as unsigned char values).
+ *  This function compares characters of the null-terminated strings s1
+ *  and s2. The comparison is done lexicographically.
+ * 	If the strings are identical, the function returns 0.
+ * 	If they differ, the function returns the difference between
+ * 	the first differing characters (treated as unsigned char values).
  *
  *  The comparison stops as soon as a differing character is found or if the
- *  end of either string is reached before n characters are compared.
+ *  end of either string is reached.
  *
  * Example usage:
  *  const char *str1 = "Hello";
  *  const char *str2 = "Helium";
- *  size_t num = 3;
- *  int result = ft_strncmp(str1, str2, num);
- *  // result will be 0 because the first three characters are identical
+ *  int result = ft_strcmp(str1, str2);
+ *  // result will be 1 because the strings are not identical
  *
  * Return:
- *  An integer less than, equal to, or greater than zero if the first n
+ *  An integer less than, equal to, or greater than zero if the
  *  characters of s1 are found to be less than, to match, or be greater than
- *  the first n characters of s2, respectively.
+ *  the characters of s2, respectively.
  */
-int			ft_strncmp(const char *s1, const char *s2, size_t n);
+int			ft_strcmp(const char *s1, const char *s2);
 
 /** ft_putstr_fd:
  * 	- Writes a string to a file descriptor.
@@ -611,6 +608,8 @@ t_complex	ft_sum_complex(t_complex z1, t_complex z2);
  */
 t_complex	ft_square_complex(t_complex z);
 
+t_complex	ft_square_complex_i_abs(t_complex z);
+
 /** ft_hypotenuse:
  * 	- Computes the hypotenuse of a right triangle.
  *
@@ -660,6 +659,93 @@ int			ft_hypotenuse(double x, double y);
  *  The mapped value in the range [new_min, new_max].
  */
 double		ft_map(int input, double new_min, double new_max, double old_max);
+
+/** VIEW CONTROL */
+/** ft_move_up:
+ *  - Moves the view of the fractal upwards.
+ *
+ * Params:
+ *  @fractal: Pointer to the fractal data structure.
+ *
+ * Description:
+ *  This function adjusts the vertical offset to move the view upwards. It takes
+ *  into account the fractal type to ensure correct movement direction. For the
+ *  Burning Ship fractal, the offset is decreased to move the view up. For other
+ *  fractals, the offset is increased to move the view up. After adjusting the
+ *  offset, the fractal is re-rendered.
+ *
+ *  Specifically, the function:
+ *  - Checks the fractal type.
+ *  - Adjusts the vertical offset based on the fractal type.
+ *  - Calls ft_render to re-render the fractal.
+ *
+ * Return:
+ *  None.
+ */
+void		ft_move_up(t_fractal *fractal);
+
+/** ft_move_down:
+ *  - Moves the view of the fractal downwards.
+ *
+ * Params:
+ *  @fractal: Pointer to the fractal data structure.
+ *
+ * Description:
+ *  This function adjusts the vertical offset to move the view downwards.
+ * 	It takes into account the fractal type to ensure correct movement direction.
+ * 	For the Burning Ship fractal, the offset is increased to move the view down.
+ * 	For other fractals, the offset is decreased to move the view down.
+ * 	After adjusting the offset, the fractal is re-rendered.
+ *
+ *  Specifically, the function:
+ *  - Checks the fractal type.
+ *  - Adjusts the vertical offset based on the fractal type.
+ *  - Calls ft_render to re-render the fractal.
+ *
+ * Return:
+ *  None.
+ */
+void		ft_move_down(t_fractal *fractal);
+
+/** ft_move_right:
+ *  - Moves the view of the fractal to the right.
+ *
+ * Params:
+ *  @fractal: Pointer to the fractal data structure.
+ *
+ * Description:
+ *  This function adjusts the horizontal offset to move the view to the right.
+ *  The offset is increased to move the view right. After adjusting the offset,
+ *  the fractal is re-rendered.
+ *
+ *  Specifically, the function:
+ *  - Adjusts the horizontal offset.
+ *  - Calls ft_render to re-render the fractal.
+ *
+ * Return:
+ *  None.
+ */
+void		ft_move_right(t_fractal *fractal);
+
+/** ft_move_left:
+ *  - Moves the view of the fractal to the left.
+ *
+ * Params:
+ *  @fractal: Pointer to the fractal data structure.
+ *
+ * Description:
+ *  This function adjusts the horizontal offset to move the view to the left.
+ *  The offset is decreased to move the view left. After adjusting the offset,
+ *  the fractal is re-rendered.
+ *
+ *  Specifically, the function:
+ *  - Adjusts the horizontal offset.
+ *  - Calls ft_render to re-render the fractal.
+ *
+ * Return:
+ *  None.
+ */
+void		ft_move_left(t_fractal *fractal);
 
 /** FRACTAL */
 /** ft_data_init:
@@ -750,7 +836,7 @@ void		ft_data_init(t_fractal *fractal);
 int			ft_init(t_fractal *mlx);
 
 /** MANDELBROT */
-/** mandelbrot:
+/** ft_mandelbrot:
  * 	- Computes and colors a point in the Mandelbrot set.
  *
  * Params:
@@ -794,7 +880,7 @@ int			ft_init(t_fractal *mlx);
  * Example usage:
  *  t_fractal fractal;
  *  // Initialize fractal, set parameters, etc.
- *  mandelbrot(x, y, &fractal);
+ *  ft_mandelbrot(x, y, &fractal);
  */
 void		ft_mandelbrot(int x, int y, t_fractal *fractal);
 
@@ -846,6 +932,55 @@ void		ft_mandelbrot(int x, int y, t_fractal *fractal);
  *  ft_julia(x, y, &fractal);
  */
 void		ft_julia(int x, int y, t_fractal *fractal);
+
+/** ft_burning_ship:
+ * 	- Computes and colors a point in the Burning Ship fractal.
+ *
+ * Params:
+ * 	@x: The x-coordinate of the point in the image.
+ * 	@y: The y-coordinate of the point in the image.
+ * 	@fractal: Pointer to the fractal data structure.
+ *
+ * Description:
+ *  This function calculates if a given point (x, y) belongs to the
+ * 	Burning Ship fractal and colors it accordingly.
+ * 	It converts the pixel coordinates to the corresponding complex coordinates,
+ * 	and iterates the Burning Ship function to determine the membership.
+ *
+ *  If the point escapes the Burning Ship fractal, it is colored with a gradient
+ * 	from two setted colors and depending on the number of iterations.
+ * 	Points within the set are colored with another setted color.
+ *
+ * Helper functions:
+ *  - ft_map(int value, double min, double max, int size):
+ *      Maps a pixel coordinate to a complex number coordinate.
+ *
+ *  - ft_sum_complex(t_complex a, t_complex b):
+ *      Computes the sum of two complex numbers.
+ *
+ *  - ft_square_complex_i_abs(t_complex z):
+ *      Computes the square of a complex number whit the absolute 
+ * 		value of the imaginary part.
+ *
+ *  - ft_hypotenuse(double x, double y):
+ *      Computes the hypotenuse of a right triangle with sides x and y.
+ *
+ *  - ft_mlx_pixel_put(int x, int y, t_img_data *img, int color):
+ *      Sets the color of a pixel in the image.
+ *
+ * Constants:
+ *  - COMPLEX_MIN: Minimum complex value for mapping.
+ *  - COMPLEX_MAX: Maximum complex value for mapping.
+ *  - WIDTH: The width of the image.
+ *  - HEIGHT: The height of the image.
+ *  - ESCAPE_VALUE: The escape threshold for the Mandelbrot iterations.
+ *
+ * Example usage:
+ *  t_fractal fractal;
+ *  // Initialize fractal, set parameters, etc.
+ *  ft_burning-ship(x, y, &fractal);
+ */
+void		ft_burning_ship(int x, int y, t_fractal *fractal);
 
 /** RENDER */
 /** ft_render:

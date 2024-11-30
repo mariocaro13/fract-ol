@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   math_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcaro-ro <mcaro-ro@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: mcaro-ro <mcaro-ro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 04:01:05 by mcaro-ro          #+#    #+#             */
-/*   Updated: 2024/11/19 16:34:43 by mcaro-ro         ###   ########.fr       */
+/*   Updated: 2024/11/30 02:19:58 by mcaro-ro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,16 @@ t_complex	ft_square_complex(t_complex z)
 	t_complex	result;
 
 	result.r = (z.r * z.r) - (z.i * z.i);
-	result.i = 2 * z.r * z.i;
+	result.i = (2 * z.r * z.i);
+	return (result);
+}
+
+t_complex	ft_square_complex_i_abs(t_complex z)
+{
+	t_complex	result;
+
+	result.r = (z.r * z.r) - (z.i * z.i);
+	result.i = fabs(2 * z.r * z.i);
 	return (result);
 }
 

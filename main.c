@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcaro-ro <mcaro-ro@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: mcaro-ro <mcaro-ro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 19:05:16 by mcaro-ro          #+#    #+#             */
-/*   Updated: 2024/11/25 22:12:07 by mcaro-ro         ###   ########.fr       */
+/*   Updated: 2024/11/30 02:38:23 by mcaro-ro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,9 @@ int	main(int argc, char **argv)
 {
 	t_fractal	fractal;
 
-	if ((2 == argc && !ft_strncmp(argv[1], "mandelbrot", 10))
-		|| (4 == argc && !ft_strncmp(argv[1], "julia", 5)))
+	if ((2 == argc && (!ft_strcmp(argv[1], MANDELBROT)
+				|| !ft_strcmp(argv[1], BURNING_SHIP)))
+		|| (4 == argc && !ft_strcmp(argv[1], JULIA)))
 	{
 		fractal.name = argv[1];
 		if (ft_init(&fractal))
@@ -32,7 +33,7 @@ int	main(int argc, char **argv)
 	}
 	else
 	{
-		ft_putstr_fd(ERROR_MESSAGE, STDERR_FILENO);
+		ft_putstr_fd(USAGE, STDERR_FILENO);
 		exit(EXIT_FAILURE);
 	}
 	ft_mlx_clean(fractal.mlx_connection, fractal.mlx_window);
