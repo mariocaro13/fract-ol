@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mcaro-ro <mcaro-ro@student.42.fr>          +#+  +:+       +#+         #
+#    By: mcaro-ro <mcaro-ro@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/18 19:03:45 by mcaro-ro          #+#    #+#              #
-#    Updated: 2024/11/30 17:13:44 by mcaro-ro         ###   ########.fr        #
+#    Updated: 2024/12/13 19:57:55 by mcaro-ro         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +21,8 @@ MINILIBX_FLAGS = -lXext -lX11
 NAME = fractol
 
 SOURCE = main.c \
+	utils.c \
+	atoi_float.c \
 	str_utils.c \
 	mlx_utils.c \
 	mlx_events.c \
@@ -51,7 +53,7 @@ runm: re
 
 runj: re
 	@$(MAKE) all --silent;
-	./$(NAME) "julia" "0,285" "0,0"
+	./$(NAME) "julia" "0.285" "0.0"
 
 runb: re
 	@$(MAKE) all --silent;

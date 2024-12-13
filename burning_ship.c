@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   burning_ship.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcaro-ro <mcaro-ro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mcaro-ro <mcaro-ro@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 01:00:33 by mcaro-ro          #+#    #+#             */
-/*   Updated: 2024/11/30 04:41:26 by mcaro-ro         ###   ########.fr       */
+/*   Updated: 2024/12/13 18:57:40 by mcaro-ro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	ft_burning_ship(int x, int y, t_fractal *fractal)
 		+ fractal->offset.i;
 	while (iter < fractal->num_of_iterations)
 	{
-		z = ft_sum_complex(ft_square_complex_i_abs(z), c);
+		z = ft_sum_complex(ft_square_complex_abs_i(z), c);
 		if ((ft_hypotenuse(z.r, z.i)) > ESCAPE_VALUE)
 		{
 			color = ft_map(iter, BLACK, PINK,

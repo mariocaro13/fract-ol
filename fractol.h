@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fractol.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcaro-ro <mcaro-ro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mcaro-ro <mcaro-ro@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 06:58:17 by mcaro-ro          #+#    #+#             */
-/*   Updated: 2024/11/30 16:32:08 by mcaro-ro         ###   ########.fr       */
+/*   Updated: 2024/12/13 20:05:25 by mcaro-ro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@
 # include <unistd.h>
 
 /** WINDOW */
-# define WIDTH 1400
-# define HEIGHT 1400
+# define WIDTH 800
+# define HEIGHT 800
 
 /** LOGIC */
 # define MIN_ITERATIONS 5
@@ -44,7 +44,7 @@
 # define RED 0X000FF0000
 # define GREEN 0X0000FF00
 # define BLUE 0X0000FF
-# define BLACK 0X000000	
+# define BLACK 0X000000
 # define WHITE 0XFFFFFF
 # define PINK 0XFF1493
 # define ORANGE 0XFFA500
@@ -152,7 +152,90 @@ typedef struct s_fractal
 	t_complex	init_point;
 }				t_fractal;
 
+/** MAIN */
+/** main
+ * 	- Entry point of the program.
+ *
+ * Params:
+ * 	@param argc: Number of command-line arguments.
+ * 	@param argv: Array of command-line arguments.
+ *
+ * Description:
+ * 	This program accepts different fractals as arguments.
+ * 	It can accept:
+ * 	- MANDELBROT or BURNING_SHIP with 2 arguments (the fractal name).
+ * 	- JULIA with 4 arguments (the fractal name and two floating-point numbers).
+ *
+ * 	The program validates the arguments and initializes the fractal.
+ * 	For the JULIA fractal,
+ * 	it also initializes the points with floating-point numbers.
+ * 	It renders the fractal and enters the MiniLibX event loop.
+ * 	If the arguments are not valid, the program exits with an error.
+ *
+ * Helper functions:
+ *  - ft_strcmp: Compares two strings.
+ *  - ft_init(t_fractal *fractal): Initializes the fractal.
+ *  - ft_atoi_float(char *str): Converts a string to a floating-point number.
+ *  - ft_exit_failure(void): Handles the failure case and exits the program.
+ *  - ft_render(t_fractal *fractal): Renders the fractal.
+ *  - mlx_loop(void *mlx_connection): Enters the MiniLibX event loop.
+ *  - ft_mlx_clean(t_fractal *fractal): Cleans up resources.
+ *
+ * Example usage:
+ *  ./fractal MANDELBROT
+ *  ./fractal JULIA 0.285 0.01
+ *  // This will initialize and render the specified fractal.
+ *
+ * Return:
+ *  EXIT_SUCCESS on success, EXIT_FAILURE on error.
+ */
+int			main(int argc, char **argv);
+
+/** UTILS */
+/** ft_exit_failure:
+ * 	- Handles failure cases and exits the program.
+ *
+ * Description:
+ * This function handles failure scenarios within the program.
+ * It prints a usage message to the standard error output,
+ * then exits the program with a failure status.
+ * This is typically used when an error condition is detected
+ *  and the program cannot continue execution safely.
+ *
+ * Helper functions:
+ *  - ft_putstr_fd(const char *s, int fd):
+ * 		Writes a string to the given file descriptor.
+ *
+ * Example usage:
+ *  if (error_condition)
+ *      ft_exit_failure();
+ *
+ * Return:
+ *  This function does not return a value as it exits the program.
+ */
+void		ft_exit_failure(void);
+
 /** STRINGS UTILS */
+/** ft_isdigit:
+ *  - Checks if the given character is a digit (0-9).
+ *
+ * Params:
+ *  @c: The character to be checked.
+ *
+ * Description:
+ *  This function checks if the given character `c` is a digit,
+ *  which means it falls within the range of '0' to '9' in the ASCII table.
+ *  It returns a non-zero value if `c` is a digit, and 0 if it is not.
+ *
+ * Example usage:
+ *  int result = ft_isdigit('5');
+ *  // result will be non-zero because '5' is a digit.
+ *
+ * Return:
+ *  A non-zero value if `c` is a digit, and 0 if it is not.
+ */
+int			ft_isdigit(int c);
+
 /** ft_strcmp:
  * 	- Compares characters of two strings.
  *
@@ -207,17 +290,22 @@ int			ft_strcmp(const char *s1, const char *s2);
 void		ft_putstr_fd(char *s, int fd);
 
 /** ft_atoi_float:
- * 	- Converts a string to a floating-point number.
+ *  - Converts a string to a floating-point number.
  *
  * Params:
- *	@str: The string to be converted.
+ *  @str: The string to be converted.
  *
  * Description:
- *	This function converts a null-terminated string to a floating-point number.
- *  It handles leading whitespace, optional signs, and decimal points.
+ *  This function converts a null-terminated string to a floating-point number.
+ *  It handles optional signs and decimal points.
  *  The function first parses the integer part of the number,
- *	and then the decimal part,
+ *  then the decimal part,
  *  and finally combines them to produce the resulting floating-point number.
+ * 	If the string contains invalid characters, calls ft_exit_failure.
+ *
+ * Helper functions:
+ *  - isdigit(int c): Checks if the character is a digit (0-9).
+ *  - ft_exit_failure(void): Handles the failure case and exits the program.
  *
  * Example usage:
  *  char *str = "   -123.456";
@@ -227,7 +315,7 @@ void		ft_putstr_fd(char *s, int fd);
  * Return:
  *  The converted floating-point number (double).
  */
-double		ft_atoi_float(char *str);
+double		ft_atoi_float(const char *str);
 
 /** MINILIBX-LINUX */
 /** ft_mlx_init:
@@ -274,40 +362,40 @@ int			ft_mlx_init(t_fractal *mlx);
 
 /** ft_mlx_img_init:
  * 	- Initializes the MiniLibX image buffer.
- * 
+ *
  * Params:
  * 	@mlx: Pointer to the fractal data structure.
- * 
+ *
  * Description:
  * This function creates a new image buffer in MiniLibX,
  * and retrieves the pixel data address of the image buffer.
  * If the image creation fails, it cleans up any allocated resources,
  * and returns an error code. *
- * 
+ *
  * Specifically, the function:
  * 	- Creates a new image buffer with specified width and height.
  * 	- Retrieves the pixel data address of the image buffer.
  * 	- Cleans up allocated resources if image creation fails.
- * 
+ *
  * Helper functions:
  * 	- ft_mlx_clean(void *mlx_connection, void *mlx_window):
  * 		Cleans up MiniLibX resources in case of failure.
- * 
+ *
  * Constants:
  * 	- WIDTH: The width of the image.
  * 	- HEIGHT: The height of the image.
  * 	- MALLOC_ERROR: The error code returned when memory allocation fails.
  * 	- EXIT_SUCCESS: The success code returned when initialization is successful.
- * 
+ *
  * Example usage:
  * 	t_fractal fractal;
  * 	int result = ft_mlx_img_init(&fractal);
- * 	if (result == EXIT_SUCCESS) { 
+ * 	if (result == EXIT_SUCCESS) {
  * 	//MiniLibX image buffer initialized successfully
  * 	} else {
  * 	// Handle initialization error
  * 	}
- * 
+ *
  * Return:
  * 	EXIT_SUCCESS on successful initialization, or MALLOC_ERROR if failure.
  * */
@@ -607,7 +695,30 @@ t_complex	ft_sum_complex(t_complex z1, t_complex z2);
  */
 t_complex	ft_square_complex(t_complex z);
 
-t_complex	ft_square_complex_i_abs(t_complex z);
+/** ft_square_complex_abs_i:
+ *  - Squares a complex number and returns the result with the imaginary part
+ *    taken as the absolute value.
+ *
+ * Params:
+ *  @z: The complex number to be squared.
+ *
+ * Description:
+ *  This function takes a complex number `z`, squares it,
+ * 	and returns a new complex number where the real part is:
+ * 		'(z.r * z.r) - (z.i * z.i)'
+ * 	and the imaginary part is the absolute value of '(2 * z.r * z.i)'.
+ *
+ * Example usage:
+ *  t_complex z;
+ *  z.r = 3;
+ *  z.i = 4;
+ *  t_complex result = ft_square_complex_abs_i(z);
+ *  // result.r will be -7 and result.i will be 24 (absolute value of -24).
+ *
+ * Return:
+ *  The squared complex number with the imaginary part taken as absolute value.
+ */
+t_complex	ft_square_complex_abs_i(t_complex z);
 
 /** ft_hypotenuse:
  * 	- Computes the hypotenuse of a right triangle.
@@ -958,7 +1069,7 @@ void		ft_julia(int x, int y, t_fractal *fractal);
  *      Computes the sum of two complex numbers.
  *
  *  - ft_square_complex_i_abs(t_complex z):
- *      Computes the square of a complex number whit the absolute 
+ *      Computes the square of a complex number whit the absolute
  * 		value of the imaginary part.
  *
  *  - ft_hypotenuse(double x, double y):
